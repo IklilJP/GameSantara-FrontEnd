@@ -4,8 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        borderBottom: "#FFFFFF33",
+        colorBorder: "#FFFFFF33",
         black: "#1d232a",
+        softBlack: "#282D34",
       },
     },
   },

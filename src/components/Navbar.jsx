@@ -9,7 +9,7 @@ function Navbar() {
   const [navModal, setNavModal] = useState(false);
 
   return (
-    <header className="flex justify-between items-center px-96 py-1 border-b border-b-borderBottom shadow-lg">
+    <header className="fixed w-full flex justify-between items-center px-96 py-1 border-b border-b-colorBorder shadow-lg bg-black">
       <div className="w-[180px]">
         <Link>
           <img

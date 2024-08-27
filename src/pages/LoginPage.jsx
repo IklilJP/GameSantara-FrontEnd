@@ -1,4 +1,6 @@
 import React from "react";
+import InputText from "../components/InputText";
+import ButtonForm from "../components/ButtonForm";
 
 function LoginPage() {
   return (
@@ -10,30 +12,12 @@ function LoginPage() {
           </h3>
         </div>
         <form action="" className="flex flex-col justify-center items-center">
-          <label className="w-96">
-            <label className="form-control w-full max-w-lg">
-              <div className="label">
-                <span className="label-text">Email</span>
-              </div>
-              <input
-                type="email"
-                placeholder="Type here"
-                className="input input-bordered w-full max-w-md rounded-[34px]"
-              />
-            </label>
-          </label>
-          <label className="w-96">
-            <label className="form-control w-full max-w-lg">
-              <div className="label">
-                <span className="label-text">Password</span>
-              </div>
-              <input
-                type="email"
-                placeholder="Type here"
-                className="input input-bordered w-full max-w-md rounded-[34px]"
-              />
-            </label>
-          </label>
+          <InputText text="Email" type="email" placeholder="Email anda" />
+          <InputText
+            text="Password"
+            type="password"
+            placeholder="Kata sandi anda"
+          />
           <label className="cursor-pointer label justify-normal mt-4 w-96">
             <input
               type="checkbox"
@@ -43,9 +27,7 @@ function LoginPage() {
             <span className="ml-3">Remember me</span>
           </label>
           <div className="mt-3 flex w-full justify-center">
-            <button className="btn bg-red-600 w-full rounded-[38px]">
-              Button
-            </button>
+            <ButtonForm text="Masuk" />
           </div>
         </form>
       </div>

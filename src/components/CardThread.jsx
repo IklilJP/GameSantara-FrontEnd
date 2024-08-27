@@ -19,15 +19,22 @@ function CardThread() {
         </div>
         <p>John doe</p>
       </div>
-      <div>
-        <p className="px-3 py-3">
+      <div className="relative">
+        <p className="m-3 line-clamp-3 whitespace-pre-line">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae
           repudiandae est beatae architecto quas! Iure, iste exercitationem!
           Molestiae corporis odio commodi impedit quisquam, excepturi omnis
-          saepe voluptas suscipit laudantium aliquid.
+          saepe voluptas suscipit laudantium aliquid. Lorem ipsum dolor sit amet
+          consectetur adipisicing elit. Modi veniam eius earum ullam
+          exercitationem, perspiciatis expedita sapiente eligendi recusandae
+          aliquid itaque? Laborum magnam excepturi cupiditate tempora error
+          repellendus autem possimus.
         </p>
+        <span className="absolute top-10 right-6 text-blue-700">
+          Lihat selengkapnya
+        </span>
       </div>
-      <div className="flex gap-3">
+      <div className="flex gap-3 mt-2">
         <div className="flex bg-[#30353B] px-4 py-1 max-w-32 rounded-3xl justify-around gap-1">
           <div className="flex items-center gap-2 ">
             <PiArrowFatUpBold />

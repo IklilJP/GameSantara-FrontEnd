@@ -19,26 +19,35 @@ function Navbar() {
         </Link>
       </div>
       <nav className="flex gap-x-5">
-        <div className="hover:bg-gray-700 p-2 transition">
-          <IoSearchOutline size={25} />
+        <div className=" p-2 transition group">
+          <IoSearchOutline
+            size={25}
+            className="group-hover:text-red-600 transition"
+          />
         </div>
-        <div className="hover:bg-gray-700 p-2 transition">
-          <IoAddSharp size={25} />
+        <div className="p-2 transition group">
+          <IoAddSharp
+            size={25}
+            className="group-hover:text-red-600 transition"
+          />
         </div>
         <AnimatePresence>
           <div className="relative">
             <button
               onClick={() => setNavModal(!navModal)}
-              className="hover:bg-gray-700 p-2 transition">
-              <FaUserCircle size={25} />
+              className="p-2 transition group">
+              <FaUserCircle
+                size={25}
+                className="group-hover:text-red-600 transition"
+              />
             </button>
             {navModal && (
               <motion.ul
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="border border-borderBottom rounded-md absolute -right-8 top-12 bg-black shadow-lg ">
-                <li className="flex items-center gap-4 px-4 py-2 border-b border-borderBottom hover:bg-gray-700 transition">
+                className="border border-colorBorder rounded-md absolute -right-8 top-12 bg-black shadow-lg ">
+                <li className="flex items-center gap-4 px-4 py-2 border-b border-colorBorder hover:bg-gray-700 transition">
                   <FaUser /> Profile
                 </li>
                 <li className="flex items-center gap-4 px-4 py-2 hover:bg-gray-700 transition">

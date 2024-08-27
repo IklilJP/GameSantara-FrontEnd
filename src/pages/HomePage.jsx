@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import SideBarLeft from "../components/SideBarLeft";
 import MainPage from "../components/MainPage";
 
 function HomePage() {

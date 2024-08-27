@@ -28,7 +28,7 @@ function CardThread() {
         </p>
       </div>
       <div className="flex gap-3">
-        <div className="flex bg-[#30353B] px-2 py-1 max-w-32 rounded-3xl justify-around gap-1">
+        <div className="flex bg-[#30353B] px-4 py-1 max-w-32 rounded-3xl justify-around gap-1">
           <div className="flex items-center gap-2 ">
             <PiArrowFatUpBold />
             <span>1</span>

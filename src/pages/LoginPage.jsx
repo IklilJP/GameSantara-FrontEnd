@@ -4,7 +4,7 @@ import ButtonForm from "../components/ButtonForm";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { login } from "../store/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const {
@@ -94,6 +94,15 @@ function LoginPage() {
             <ButtonForm text="Masuk" isLoading={isLoading} />
           </div>
         </form>
+
+        <div className="flex flex-col justify-center items-center mt-2">
+          <p>Tidak punya akun?</p>
+          <Link
+            to="/register"
+            className="text-red-600 font-bold hover:text-red-600/70 transition">
+            Register
+          </Link>
+        </div>
       </div>
     </div>
   );

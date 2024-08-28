@@ -12,6 +12,10 @@
   scrollbar-width: none
 }
 
+.card-news {
+  background: linear-gradient(180deg, rgba(38, 40, 55, 0) 0%, #262837 100%);
+}
+
 /* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
   width: none

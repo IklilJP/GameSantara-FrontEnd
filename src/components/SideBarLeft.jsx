@@ -40,7 +40,7 @@ function SideBarLeft() {
               <button type="button" className="flex items-center gap-3 px-4">
                 <div className="bg-white rounded-full w-6 h-6 ">
                   <img
-                    src="https://res.cloudinary.com/dpofjmzdu/image/upload/v1724816103/arcade.png"
+                    src="https://res.cloudinary.com/dpofjmzdu/image/upload/v1724832661/arcade.png"
                     alt="Login Background"
                     className="object-contain"
                   />

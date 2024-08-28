@@ -7,6 +7,8 @@ const login = async (email, password) => {
       password,
     });
 
+    console.log(response.data.data);
+
     const { token } = response.data.data;
 
     if (token) {

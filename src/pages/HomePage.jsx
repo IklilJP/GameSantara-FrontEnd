@@ -17,7 +17,7 @@ function HomePage() {
           <MainPage />
         </div>
 
-        <div className="sidebar w-[10%] fixed right-[19%] top-16 bottom-0 overflow-y-auto">
+        <div className="sidebar w-[15%] fixed right-[14%] top-16 bottom-0 overflow-y-auto">
           <SideBarRight />
         </div>
       </div>

@@ -3,10 +3,28 @@ import React, { useState } from "react";
 import { FaUser, FaUserCircle } from "react-icons/fa";
 import { IoAddSharp, IoSearchOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../store/authSlice";
 
 function Navbar() {
   const [navModal, setNavModal] = useState(false);
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    setIsLoading(true);
+    try {
+      const resultAction = await dispatch(logout()).unwrap();
+      console.log("User berhasil logout :", resultAction);
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout Gagal gagal:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <header className="fixed z-50 w-full flex justify-around items-center px-96 py-1 border-b border-b-colorBorder shadow-lg bg-black">
@@ -59,14 +77,24 @@ function Navbar() {
                 <li className="flex items-center gap-4 px-4 py-2 border-b border-colorBorder hover:bg-gray-700 transition">
                   <FaUser /> Profile
                 </li>
-                <li className="flex items-center gap-4 px-4 py-2 hover:bg-gray-700 transition">
-                  <MdLogout /> Keluar
+                <li>
+                  <button
+                    type="button"
+                    className="flex items-center gap-4 px-4 py-2 hover:bg-gray-700 transition"
+                    onClick={() => handleLogout()}>
+                    <MdLogout /> Keluar
+                  </button>
                 </li>
               </motion.ul>
             )}
           </div>
         </AnimatePresence>
       </nav>
+      {isLoading && (
+        <div className="absolute w-full h-screen backdrop-blur-sm bg-white/10 left-0 top-0 flex justify-center items-center">
+          <span className="loading loading-dots loading-lg text-info"></span>
+        </div>
+      )}
     </header>
   );
 }

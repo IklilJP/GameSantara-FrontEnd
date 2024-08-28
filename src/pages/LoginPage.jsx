@@ -13,10 +13,12 @@ function LoginPage() {
     formState: { errors },
   } = useForm();
   const [isRememberMe, setIsRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (data) => {
+    setIsLoading(true);
     const { email, password } = data;
     try {
       const resultAction = await dispatch(login({ email, password })).unwrap();
@@ -24,6 +26,8 @@ function LoginPage() {
       navigate("/");
     } catch (err) {
       console.error("Login gagal:", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -87,7 +91,7 @@ function LoginPage() {
             <span className="ml-3">Remember me</span>
           </label>
           <div className="mt-3 flex w-full justify-center">
-            <ButtonForm text="Masuk" />
+            <ButtonForm text="Masuk" isLoading={isLoading} />
           </div>
         </form>
       </div>

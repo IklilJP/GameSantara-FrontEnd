@@ -23,8 +23,18 @@ const login = async (email, password) => {
   }
 };
 
+const logout = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      localStorage.removeItem("token");
+      resolve("Berhasil logout");
+    }, 3000);
+  });
+};
+
 const AuthService = {
   login,
+  logout,
 };
 
 export default AuthService;

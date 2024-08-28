@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import InputText from "../components/InputText";
 import ButtonForm from "../components/ButtonForm";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { login } from "../store/authSlice";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const {
@@ -10,6 +13,19 @@ function LoginPage() {
     formState: { errors },
   } = useForm();
   const [isRememberMe, setIsRememberMe] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogin = async (data) => {
+    const { email, password } = data;
+    try {
+      const resultAction = await dispatch(login({ email, password })).unwrap();
+      console.log("User login berhasil:", resultAction);
+      navigate("/");
+    } catch (err) {
+      console.error("Login gagal:", err);
+    }
+  };
 
   return (
     <div className="bg-[url('https://res.cloudinary.com/dpofjmzdu/image/upload/v1724813280/background_all.png')] h-screen w-screen bg-cover bg-no-repeat flex justify-center items-center">
@@ -19,7 +35,9 @@ function LoginPage() {
             Log in
           </h3>
         </div>
-        <form action="" className="flex flex-col justify-center items-center">
+        <form
+          className="flex flex-col justify-center items-center"
+          onSubmit={handleSubmit(handleLogin)}>
           <InputText
             text="Email"
             type="email"

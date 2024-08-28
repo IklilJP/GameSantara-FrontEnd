@@ -166,7 +166,7 @@ function RegisterPage() {
                 <ButtonForm text="Daftar" isLoading={isLoading} />
               </div>
             </form>
-            <div className="flex flex-col justify-center items-center mt-2">
+            <div className="flex justify-center items-center mt-2 gap-2">
               <p>Sudah punya akun?</p>
               <Link
                 to="/login"

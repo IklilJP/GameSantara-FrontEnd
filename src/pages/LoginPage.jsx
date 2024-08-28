@@ -4,7 +4,7 @@ import ButtonForm from "../components/ButtonForm";
 
 function LoginPage() {
   return (
-    <div className="bg-[url('https://res.cloudinary.com/dtmtphyux/image/upload/v1724749959/bg-image.png')] h-screen w-screen bg-cover bg-no-repeat flex justify-center items-center">
+    <div className="bg-[url('https://res.cloudinary.com/dpofjmzdu/image/upload/v1724813280/background_all.png')] h-screen w-screen bg-cover bg-no-repeat flex justify-center items-center">
       <div className="w-[450px] max-w-lg max-h-lg bg-black px-6 py-8 rounded-xl">
         <div>
           <h3 className="w-full text-center text-3xl font-bold text-red-600">

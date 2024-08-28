@@ -14,7 +14,7 @@ function Navbar() {
         <div className="w-[180px]">
           <Link>
             <img
-              src="https://res.cloudinary.com/dtmtphyux/image/upload/v1724742165/gamesantara-logo.png"
+              src="https://res.cloudinary.com/dpofjmzdu/image/upload/v1724813277/logo-header.png"
               alt="Game Santara"
             />
           </Link>

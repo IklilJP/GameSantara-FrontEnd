@@ -4,7 +4,7 @@ import ButtonForm from "../components/ButtonForm";
 
 function RegisterPage() {
   return (
-    <div className="bg-[url('https://res.cloudinary.com/dtmtphyux/image/upload/v1724749959/bg-image.png')] h-screen w-screen bg-cover bg-no-repeat flex justify-center items-center">
+    <div className="bg-[url('https://res.cloudinary.com/dpofjmzdu/image/upload/v1724813280/background_all.png')] h-screen w-screen bg-cover bg-no-repeat flex justify-center items-center">
       <div className="w-[100%] max-w-4xl max-h-lg bg-black pl-10 py-8 rounded-xl">
         <div>
           <h3 className="w-full text-center text-3xl font-bold text-red-600">
@@ -14,7 +14,7 @@ function RegisterPage() {
         <div className="flex pt-8">
           <div className="flex-1 relative">
             <img
-              src="https://res.cloudinary.com/dtmtphyux/image/upload/v1724766181/xpjk2mwbejaozqnl5a9z.jpg"
+              src="https://res.cloudinary.com/dpofjmzdu/image/upload/v1724813278/background_Register.jpg"
               className="bg-cover w-[400px] h-[560px] rounded-md"
             />
             <div className="w-full h-full bg-black/20 z-10 absolute top-0 left-0"></div>

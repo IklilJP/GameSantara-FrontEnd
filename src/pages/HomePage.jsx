@@ -8,8 +8,8 @@ function HomePage() {
   return (
     <div className="mx-auto h-screen overflow-hidden">
       <Navbar />
-      <div className="flex justify-center gap-4 pt-10 h-full overflow-y-auto">
-        <div className="sidebar w-[28%] fixed left-0 top-16 bottom-0 overflow-y-auto text-right">
+      <div className="flex gap-4 pt-10 h-full overflow-y-auto">
+        <div className="sidebar w-[10%] fixed left-[19%] top-16 bottom-0 overflow-y-auto">
           <SideBarLeft />
         </div>
 
@@ -17,7 +17,7 @@ function HomePage() {
           <MainPage />
         </div>
 
-        <div className="sidebar w-[28%] fixed right-0 top-16 bottom-0 overflow-y-auto">
+        <div className="sidebar w-[10%] fixed right-[19%] top-16 bottom-0 overflow-y-auto">
           <SideBarRight />
         </div>
       </div>

@@ -4,7 +4,8 @@
 
 /* Firefox */
 * {
-  scrollbar-width: thin
+  scrollbar-width: thin;
+  font-family: 'Open Sans', sans-serif
 }
 
 .sidebar {

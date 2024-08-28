@@ -1,7 +1,28 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AuthService from "../api/authService";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const token = Cookies.get("authToken");
+let initialState;
+
+if (token) {
+  try {
+    const decodedToken = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+
+    if (decodedToken.exp > currentTime) {
+      initialState = { isLoggedIn: true, user: decodedToken, error: null };
+    } else {
+      Cookies.remove("authToken");
+      initialState = { isLoggedIn: false, user: null, error: null };
+    }
+  } catch (error) {
+    initialState = { isLoggedIn: false, user: null, error: null };
+  }
+} else {
+  initialState = { isLoggedIn: false, user: null, error: null };
+}
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -10,10 +31,9 @@ export const login = createAsyncThunk(
       const response = await AuthService.login(
         authData.email,
         authData.password,
+        authData.isRememberMe,
       );
 
-      console.log(response);
-
       return response;
     } catch (err) {
       return thunkApi.rejectWithValue(err.message);
@@ -21,45 +41,44 @@ export const login = createAsyncThunk(
   },
 );
 
-export const logout = createAsyncThunk(
-  "auth/logout",
-  async (authData, thunkApi) => {
-    try {
-      const response = await AuthService.logout();
+export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
+  try {
+    const response = await AuthService.logout();
 
-      console.log(response);
+    console.log(response);
 
-      return response;
-    } catch (err) {
-      return thunkApi.rejectWithValue(err.message);
-    }
-  },
-);
-
-const initialState = user
-  ? { isLoggedIn: true, user }
-  : { isLoggedIn: false, user: null };
+    return response;
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.message);
+  }
+});
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
+  reducers: {
+    // Add any synchronous actions if needed
+  },
   extraReducers: (builder) => {
     builder
       .addCase(login.fulfilled, (state, action) => {
         state.isLoggedIn = true;
         state.user = action.payload;
+        state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoggedIn = false;
-        state.error = true;
+        state.user = null;
+        state.error = action.payload;
       })
-      .addCase(logout.fulfilled, (state, action) => {
+      .addCase(logout.fulfilled, (state) => {
         state.isLoggedIn = false;
+        state.user = null;
         state.error = null;
       })
       .addCase(logout.rejected, (state, action) => {
         state.isLoggedIn = true;
-        state.error = true;
+        state.error = action.payload;
       });
   },
 });

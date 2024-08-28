@@ -16,17 +16,22 @@ function CardThread() {
   };
   return (
     <div className="my-3 bg-softBlack p-4 rounded-md">
-      <div className="flex items-center gap-x-2">
+      <div className="flex items-center gap-x-3">
         <div className="w-8 rounded-full">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
             className="rounded-full"
           />
         </div>
-        <div className="flex gap-x-3">
-          <p className="text-sm font-bold">John doe</p>
-          <span>&bull;</span>
-          <span>1 Hari</span>
+        <div className="flex justify-center">
+          <div className="flex flex-col gap-x-3">
+            <p className="text-sm font-bold">John doe</p>
+            <span className="text-[11px] leading-5">1 Hari</span>
+          </div>
+          <div className="flex justify-center ml-2">
+            &bull;
+            <span className="ml-2 text-sm font-bold text-red-600">Arcade</span>
+          </div>
         </div>
       </div>
       <div className="my-5">
@@ -45,7 +50,7 @@ function CardThread() {
             aliquid itaque? Laborum magnam excepturi cupiditate tempora error
             repellendus autem possimus.
           </p>
-          <span className="absolute bottom-0 right-0 text-blue-700 bg-gradient-to-r from-transparent from-10% to-softBlack to-30% w-52 text-right">
+          <span className="absolute bottom-0 right-0 text-blue-700 bg-gradient-to-r from-transparent from-5% to-softBlack to-20% w-52 text-right">
             Lihat selengkapnya
           </span>
         </div>
@@ -81,7 +86,7 @@ function CardThread() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 onClick={handleCopy}
-                className="w-32 max-w-40 bg-black absolute top-12 border border-colorBorder rounded-lg">
+                className="w-36 max-w-40 bg-black absolute top-12 border border-colorBorder rounded-lg">
                 <span className="flex items-center gap-3 py-2 px-3  hover:bg-gray-700 transition">
                   <HiLink /> Salin Link
                 </span>

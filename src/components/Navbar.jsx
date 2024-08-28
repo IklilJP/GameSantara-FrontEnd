@@ -1,17 +1,31 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaUser, FaUserCircle } from "react-icons/fa";
-import { IoAddSharp, IoSearchOutline } from "react-icons/io5";
-import { MdLogout } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { IoAddSharp, IoLogInOutline, IoSearchOutline } from "react-icons/io5";
+import { MdLogout, MdOutlineLogin } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../store/authSlice";
+import { RiEditBoxLine } from "react-icons/ri";
 
 function Navbar() {
   const [navModal, setNavModal] = useState(false);
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(user);
+    if (user) {
+      try {
+        // const decoded = jwtDecode(token);
+        // setUserId(decoded.sub);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  }, []);
 
   const handleLogout = async () => {
     setIsLoading(true);
@@ -68,31 +82,58 @@ function Navbar() {
                 className="group-hover:text-red-600 transition"
               />
             </button>
-            {navModal && (
-              <motion.ul
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="border border-colorBorder rounded-md absolute -right-8 top-12 bg-black shadow-lg ">
-                <li className="flex items-center gap-4 px-4 py-2 border-b border-colorBorder hover:bg-gray-700 transition">
-                  <FaUser /> Profile
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    className="flex items-center gap-4 px-4 py-2 hover:bg-gray-700 transition"
-                    onClick={() => handleLogout()}>
-                    <MdLogout /> Keluar
-                  </button>
-                </li>
-              </motion.ul>
-            )}
+            {navModal &&
+              (user ? (
+                <motion.ul
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="border border-colorBorder rounded-md absolute -right-8 top-12 bg-black shadow-lg ">
+                  <li>
+                    <Link
+                      to={`/profile/${user}`}
+                      className="flex items-center gap-4 px-4 py-2 border-b border-colorBorder hover:bg-gray-700 transition">
+                      <FaUser /> Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      type="button"
+                      className="flex items-center gap-4 px-4 py-2 hover:bg-gray-700 transition"
+                      onClick={() => handleLogout()}>
+                      <MdLogout /> Keluar
+                    </button>
+                  </li>
+                </motion.ul>
+              ) : (
+                <motion.ul
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="border border-colorBorder rounded-md absolute -right-8 top-12 bg-black shadow-lg ">
+                  <li>
+                    <Link
+                      to={"/login"}
+                      className="flex items-center gap-4 px-4 py-2 border-b border-colorBorder hover:bg-gray-700 transition">
+                      <MdOutlineLogin size={20} /> Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      type="button"
+                      className="flex items-center gap-4 px-4 py-2 hover:bg-gray-700 transition"
+                      to={"/register"}>
+                      <RiEditBoxLine size={20} /> Register
+                    </Link>
+                  </li>
+                </motion.ul>
+              ))}
           </div>
         </AnimatePresence>
       </nav>
       {isLoading && (
         <div className="absolute w-full h-screen backdrop-blur-sm bg-white/10 left-0 top-0 flex justify-center items-center">
-          <span className="loading loading-dots loading-lg text-info"></span>
+          <span className="loading loading-dots loading-lg text-red-600"></span>
         </div>
       )}
     </header>

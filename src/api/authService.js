@@ -1,18 +1,30 @@
+import { jwtDecode } from "jwt-decode";
 import { axiosInstance } from "./axiosInstance";
+import Cookies from "js-cookie";
 
-const login = async (email, password) => {
+const login = async (email, password, isRememberMe) => {
   try {
     const response = await axiosInstance.post("/auth/login", {
       email,
       password,
     });
 
-    console.log(response.data.data);
-
     const { token } = response.data.data;
 
     if (token) {
-      localStorage.setItem("token", token);
+      if (!isRememberMe) {
+        sessionStorage.setItem("authToken", token);
+      } else {
+        const decodedToken = jwtDecode(token);
+        const exp = decodedToken.exp;
+        const expirationDate = new Date(exp * 1000);
+
+        Cookies.set("authToken", token, {
+          expires: expirationDate,
+          secure: true,
+          sameSite: "Strict",
+        });
+      }
     }
 
     return response.data;
@@ -28,7 +40,8 @@ const login = async (email, password) => {
 const logout = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      localStorage.removeItem("token");
+      Cookies.remove("authToken");
+      sessionStorage.removeItem("authToken");
       resolve("Berhasil logout");
     }, 3000);
   });

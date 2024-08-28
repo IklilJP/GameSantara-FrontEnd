@@ -21,7 +21,9 @@ function LoginPage() {
     setIsLoading(true);
     const { email, password } = data;
     try {
-      const resultAction = await dispatch(login({ email, password })).unwrap();
+      const resultAction = await dispatch(
+        login({ email, password, isRememberMe }),
+      ).unwrap();
       console.log("User login berhasil:", resultAction);
       navigate("/");
     } catch (err) {
@@ -80,7 +82,7 @@ function LoginPage() {
             }}
             errors={errors}
           />
-          <label className="cursor-pointer label justify-normal mt-4 w-96">
+          <label className="cursor-pointer label justify-normal w-96">
             <input
               type="checkbox"
               defaultChecked={isRememberMe}
@@ -95,11 +97,11 @@ function LoginPage() {
           </div>
         </form>
 
-        <div className="flex flex-col justify-center items-center mt-2">
+        <div className="flex justify-center items-center mt-2 gap-x-2">
           <p>Tidak punya akun?</p>
           <Link
             to="/register"
-            className="text-red-600 font-bold hover:text-red-600/70 transition">
+            className="text-red-600 font-bold hover:text-red-600/70 transition mt-1">
             Register
           </Link>
         </div>

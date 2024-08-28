@@ -12,11 +12,12 @@ function RegisterPage() {
           </h3>
         </div>
         <div className="flex pt-8">
-          <div className="flex-1">
+          <div className="flex-1 relative">
             <img
-              src="https://res.cloudinary.com/dtmtphyux/image/upload/v1724728814/zy7bv85t4fyvwt44rafx.jpg"
+              src="https://res.cloudinary.com/dtmtphyux/image/upload/v1724766181/xpjk2mwbejaozqnl5a9z.jpg"
               className="bg-cover w-[400px] h-[560px] rounded-md"
             />
+            <div className="w-full h-full bg-black/20 z-10 absolute top-0 left-0"></div>
           </div>
           <form
             action=""

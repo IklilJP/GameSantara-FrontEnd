@@ -1,41 +1,57 @@
-import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useState } from "react";
 import { FaRegMessage } from "react-icons/fa6";
+import { HiLink } from "react-icons/hi";
 import {
-  PiArrowFatDown,
   PiArrowFatDownBold,
-  PiArrowFatUp,
   PiArrowFatUpBold,
+  PiShareFat,
 } from "react-icons/pi";
 
 function CardThread() {
+  const [modalShare, setModalShare] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText("COpy BRo");
+  };
   return (
-    <div className="my-3 bg-softBlack p-4">
-      <div className="flex items-center gap-x-4">
-        <div className="w-10 rounded-full">
+    <div className="my-3 bg-softBlack p-4 rounded-md">
+      <div className="flex items-center gap-x-2">
+        <div className="w-8 rounded-full">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
             className="rounded-full"
           />
         </div>
-        <p>John doe</p>
+        <div className="flex gap-x-3">
+          <p className="text-sm font-bold">John doe</p>
+          <span>&bull;</span>
+          <span>1 Hari</span>
+        </div>
       </div>
-      <div className="relative">
-        <p className="m-3 line-clamp-3 whitespace-pre-line">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae
-          repudiandae est beatae architecto quas! Iure, iste exercitationem!
-          Molestiae corporis odio commodi impedit quisquam, excepturi omnis
-          saepe voluptas suscipit laudantium aliquid. Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. Modi veniam eius earum ullam
-          exercitationem, perspiciatis expedita sapiente eligendi recusandae
-          aliquid itaque? Laborum magnam excepturi cupiditate tempora error
-          repellendus autem possimus.
-        </p>
-        <span className="absolute bottom-0 right-0 text-blue-700 bg-gradient-to-r from-transparent from-10% to-softBlack to-30% w-52 text-right">
-          Lihat selengkapnya
-        </span>
+      <div className="my-5">
+        <h2 className="font-bold text-lg">
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti,
+          impedit.
+        </h2>
+        <div className="relative mt-1">
+          <p className="line-clamp-3 whitespace-pre-line">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae
+            repudiandae est beatae architecto quas! Iure, iste exercitationem!
+            Molestiae corporis odio commodi impedit quisquam, excepturi omnis
+            saepe voluptas suscipit laudantium aliquid. Lorem ipsum dolor sit
+            amet consectetur adipisicing elit. Modi veniam eius earum ullam
+            exercitationem, perspiciatis expedita sapiente eligendi recusandae
+            aliquid itaque? Laborum magnam excepturi cupiditate tempora error
+            repellendus autem possimus.
+          </p>
+          <span className="absolute bottom-0 right-0 text-blue-700 bg-gradient-to-r from-transparent from-10% to-softBlack to-30% w-52 text-right">
+            Lihat selengkapnya
+          </span>
+        </div>
       </div>
       <div className="flex gap-3 mt-2">
-        <div className="flex bg-[#30353B] px-4 py-1 max-w-32 rounded-3xl justify-around gap-1">
+        <div className="flex bg-[#30353B] px-4 py-1 w-32 rounded-3xl justify-around gap-1">
           <div className="flex items-center gap-2 ">
             <PiArrowFatUpBold />
             <span>1</span>
@@ -43,15 +59,36 @@ function CardThread() {
           <span className="bg-gray-600 w-[1px]"></span>
           <div className="flex items-center gap-2">
             <PiArrowFatDownBold />
-            <span>1</span>
+            <span>6</span>
           </div>
         </div>
-        <div className="flex bg-[#30353B] p-2 max-w-32 rounded-3xl justify-around gap-1">
+        <button className="flex bg-[#30353B] px-4 py-1 max-w-32 rounded-3xl justify-around gap-1">
           <div className="flex items-center gap-2">
             <FaRegMessage />
             <span>1</span>
           </div>
-        </div>
+        </button>
+        <AnimatePresence>
+          <button
+            className="flex bg-[#30353B] px-4 py-1 max-w-32 rounded-3xl justify-around gap-1 relative group"
+            onClick={() => setModalShare(!modalShare)}>
+            <div className="flex items-center gap-2 w-full h-full">
+              <PiShareFat className="group-hover:text-red-600 transition" />
+            </div>
+            {modalShare && (
+              <motion.button
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                onClick={handleCopy}
+                className="w-32 max-w-40 bg-black absolute top-12 border border-colorBorder rounded-lg">
+                <span className="flex items-center gap-3 py-2 px-3  hover:bg-gray-700 transition">
+                  <HiLink /> Salin Link
+                </span>
+              </motion.button>
+            )}
+          </button>
+        </AnimatePresence>
       </div>
     </div>
   );

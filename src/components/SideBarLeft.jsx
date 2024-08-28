@@ -2,8 +2,12 @@ import React from "react";
 
 function SideBarLeft() {
   return (
-    <div className="">
-      <div>sidebar left</div>
+    <div>
+      <div>
+        <div>
+          <span></span>
+        </div>
+      </div>
     </div>
   );
 }

@@ -4,8 +4,12 @@ import MainLayout from "../components/Layout";
 
 function ProfilePage() {
   const fetchData = async () => {
-    const response = await axiosInstance.get("user");
-    console.log(response.data.data);
+    try {
+      const response = await axiosInstance.get("/user");
+      console.log(response.data.data);
+    } catch (error) {
+      console.log("profile: ", error);
+    }
   };
   useEffect(() => {
     fetchData();

@@ -56,15 +56,12 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    // Add any synchronous actions if needed
-  },
   extraReducers: (builder) => {
     builder
       .addCase(login.fulfilled, (state, action) => {
         state.isLoggedIn = true;
-        // const decodedToken = jwtDecode(token);
-        state.user = action.payload.data;
+        const decodedToken = jwtDecode(action.payload.data.token);
+        state.user = decodedToken;
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {

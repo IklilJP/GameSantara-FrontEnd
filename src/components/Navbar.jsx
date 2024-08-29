@@ -16,7 +16,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(user);
+    console.log("navbar: ", user);
     if (user) {
       try {
         // const decoded = jwtDecode(token);

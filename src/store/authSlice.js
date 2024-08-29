@@ -63,7 +63,8 @@ const authSlice = createSlice({
     builder
       .addCase(login.fulfilled, (state, action) => {
         state.isLoggedIn = true;
-        state.user = action.payload;
+        // const decodedToken = jwtDecode(token);
+        state.user = action.payload.data;
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {

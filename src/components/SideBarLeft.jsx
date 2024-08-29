@@ -15,7 +15,7 @@ function SideBarLeft() {
   const fetchTags = async () => {
     try {
       const response = await axiosInstance.get("/tags");
-      setTagItems(response.data);
+      setTagItems(response.data.data);
     } catch (error) {
       console.log(error);
     }

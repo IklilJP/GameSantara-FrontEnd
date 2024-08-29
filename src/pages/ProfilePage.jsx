@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import axiosInstance from "../api/axiosInstance";
+import MainLayout from "../components/Layout";
 
 function ProfilePage() {
   const fetchData = async () => {
@@ -10,7 +11,7 @@ function ProfilePage() {
     fetchData();
   });
 
-  return <div>ProfilePage</div>;
+  return <MainLayout>hai</MainLayout>;
 }
 
 export default ProfilePage;

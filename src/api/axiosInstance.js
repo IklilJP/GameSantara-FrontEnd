@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 export const axiosInstance = axios.create({
   baseURL: "http://10.10.102.115:8080/api", // IP Mirza
@@ -8,7 +9,7 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken") || Cookies.get("authToken");
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

@@ -4,7 +4,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { HiOutlineClock } from "react-icons/hi";
 import { IoTrendingUp } from "react-icons/io5";
 import { SlGameController } from "react-icons/sl";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import TagList from "./TagList";
 
@@ -29,10 +29,11 @@ function SideBarLeft() {
     <div>
       <div>
         <div className="flex flex-col gap-3 py-6">
-          <span
+          <Link
+            to={"/"}
             className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname == "/" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <AiOutlineHome size={20} /> Home
-          </span>
+          </Link>
           <span
             className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname == "/trending" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <IoTrendingUp size={20} /> Trending
@@ -42,7 +43,7 @@ function SideBarLeft() {
             <HiOutlineClock size={20} /> Terbaru
           </span>
           <span
-            className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname == "/profile" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
+            className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname.startsWith("/profile") ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <FaUserCircle size={20} /> Profile
           </span>
         </div>

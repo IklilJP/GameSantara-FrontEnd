@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaUser, FaUserCircle } from "react-icons/fa";
-import { IoAddSharp, IoLogInOutline, IoSearchOutline } from "react-icons/io5";
+import { IoAddSharp, IoSearchOutline } from "react-icons/io5";
 import { MdLogout, MdOutlineLogin } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,18 +14,6 @@ function Navbar() {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log("navbar: ", user);
-    if (user) {
-      try {
-        // const decoded = jwtDecode(token);
-        // setUserId(decoded.sub);
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
-    }
-  }, []);
 
   const handleLogout = async () => {
     setIsLoading(true);
@@ -91,7 +79,7 @@ function Navbar() {
                   className="border border-colorBorder rounded-md absolute -right-8 top-12 bg-black shadow-lg ">
                   <li>
                     <Link
-                      to={`/profile/${user}`}
+                      to={`/profile/${user.sub}`}
                       className="flex items-center gap-4 px-4 py-2 border-b border-colorBorder hover:bg-gray-700 transition">
                       <FaUser /> Profile
                     </Link>

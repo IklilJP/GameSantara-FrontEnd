@@ -12,7 +12,7 @@ const MainLayout = ({ children }) => {
         </div>
 
         <div className="w-5/12 mx-auto">
-          <main className="border-l border-l-colorBorder border-r border-r-colorBorder mx-auto px-6 h-auto">
+          <main className="border-l border-l-colorBorder border-r border-r-colorBorder mx-auto px-6 min-h-screen">
             {children}
           </main>
         </div>

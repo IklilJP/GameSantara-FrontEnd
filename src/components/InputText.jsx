@@ -18,7 +18,7 @@ function InputText({
         <input
           type={type}
           placeholder={placeholder}
-          className="input input-bordered w-full max-w-md h-11 rounded-[34px]"
+          className={`input input-bordered w-full max-w-md h-11 rounded-[34px] ${errors[nameForm] ? "border border-red-400" : ""}`}
           {...register(nameForm, { ...optionsForm })}
         />
         {errors[nameForm] && (

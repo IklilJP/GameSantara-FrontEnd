@@ -3,7 +3,7 @@ import AuthService from "../api/authService";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
-const token = Cookies.get("authToken");
+const token = Cookies.get("authToken") || sessionStorage.getItem("authToken");
 let initialState;
 
 if (token) {

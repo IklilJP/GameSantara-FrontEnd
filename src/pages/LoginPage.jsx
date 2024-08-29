@@ -7,13 +7,11 @@ import { login } from "../store/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  // prettier-ignore
+  const { register, handleSubmit, formState: { errors }, } = useForm();
   const [isRememberMe, setIsRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,7 +25,11 @@ function LoginPage() {
       console.log("User login berhasil:", resultAction);
       navigate("/");
     } catch (err) {
-      console.error("Login gagal:", err);
+      if (err === "Bad credentials") {
+        setIsError("Email atau kata sandi salah");
+      } else {
+        setIsError("Server error");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -50,6 +52,7 @@ function LoginPage() {
             placeholder="Email anda"
             register={register}
             nameForm="email"
+            errors={errors}
             optionsForm={{
               required: "Email harus terisi",
               validate: {
@@ -57,7 +60,6 @@ function LoginPage() {
                   !value.startsWith(" ") || "Tidak boleh ada spasi di awal",
               },
             }}
-            errors={errors}
           />
           <InputText
             text="Password"
@@ -82,6 +84,7 @@ function LoginPage() {
             }}
             errors={errors}
           />
+          {isError && <span className="text-red-600">{isError}</span>}
           <label className="cursor-pointer label justify-normal w-96">
             <input
               type="checkbox"

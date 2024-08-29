@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import InputText from "../components/InputText";
 import ButtonForm from "../components/ButtonForm";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { axiosInstance } from "../api/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
+import { validationSchemaRegsiter } from "../libs/validationSchema";
 
 function RegisterPage() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-  } = useForm();
+  // prettier-ignore
+  const { register, handleSubmit, formState: { errors }, } = useForm({
+    resolver: yupResolver(validationSchemaRegsiter),
+  });
 
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ function RegisterPage() {
   return (
     <div className="bg-[url('https://res.cloudinary.com/dpofjmzdu/image/upload/v1724813280/background_all.png')] h-screen w-screen bg-cover bg-no-repeat flex justify-center items-center">
       <div className="w-6/12 max-w-5xl max-h-xl shadow-lg">
-        <div className="flex ">
+        <div className="flex">
           <div className="flex-1 w-52 relative bg-[url('https://res.cloudinary.com/dpofjmzdu/image/upload/v1724813278/background_Register.jpg')] rounded-l-xl"></div>
           <div className="bg-black py-5 px-4 rounded-r-xl">
             <div>
@@ -54,21 +54,6 @@ function RegisterPage() {
                 placeholder="Nama anda"
                 register={register}
                 nameForm="fullName"
-                optionsForm={{
-                  required: "Nama lengkap diperlukan",
-                  validate: {
-                    noStartingSpace: (value) =>
-                      !value.startsWith(" ") || "Tidak boleh ada spasi di awal",
-                  },
-                  minLength: {
-                    value: 4,
-                    message: "Password minimal 4 karakter",
-                  },
-                  maxLength: {
-                    value: 35,
-                    message: "Password maksimal 35 karakter",
-                  },
-                }}
                 errors={errors}
               />
               <InputText
@@ -77,24 +62,6 @@ function RegisterPage() {
                 placeholder="Nama panggilan anda"
                 register={register}
                 nameForm="username"
-                optionsForm={{
-                  required: "username diperlukan",
-                  validate: {
-                    noStartingSpace: (value) =>
-                      !value.startsWith(" ") || "Tidak boleh ada spasi di awal",
-                    mustBeLowercase: (value) =>
-                      value === value.toLowerCase() ||
-                      "Nama panggilan harus menggunakan huruf kecil",
-                  },
-                  minLength: {
-                    value: 4,
-                    message: "Password minimal 4 karakter",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "Password maksimal 20 karakter",
-                  },
-                }}
                 errors={errors}
               />
               <InputText
@@ -103,13 +70,6 @@ function RegisterPage() {
                 placeholder="Email anda"
                 register={register}
                 nameForm="email"
-                optionsForm={{
-                  required: "Email harus terisi",
-                  validate: {
-                    noStartingSpace: (value) =>
-                      !value.startsWith(" ") || "Tidak boleh ada spasi di awal",
-                  },
-                }}
                 errors={errors}
               />
               <InputText
@@ -118,21 +78,6 @@ function RegisterPage() {
                 placeholder="Kata sandi anda"
                 register={register}
                 nameForm="password"
-                optionsForm={{
-                  required: "Password harus terisi",
-                  minLength: {
-                    value: 8,
-                    message: "Password minimal 8 karakter",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "Password maksimal 20 karakter",
-                  },
-                  validate: {
-                    noStartingSpace: (value) =>
-                      !value.startsWith(" ") || "Tidak boleh ada spasi di awal",
-                  },
-                }}
                 errors={errors}
               />
               <InputText
@@ -141,25 +86,6 @@ function RegisterPage() {
                 placeholder="Konfirmasi kata sandi anda"
                 register={register}
                 nameForm="confirmPassword"
-                optionsForm={{
-                  required: "Konfirmasi password diperlukan",
-                  minLength: {
-                    value: 8,
-                    message: "Password minimal 8 karakter",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "Password maksimal 20 karakter",
-                  },
-                  validate: {
-                    noStartingSpace: (value) =>
-                      !value.startsWith(" ") || "Tidak boleh ada spasi di awal",
-                    matches: (value) => {
-                      const password = getValues("password");
-                      return value === password || "Password tidak cocok";
-                    },
-                  },
-                }}
                 errors={errors}
               />
               <div className="mt-3 flex w-full justify-center">

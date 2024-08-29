@@ -5,34 +5,47 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { login } from "../store/authSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchemaLogin } from "../libs/validationSchema";
 
 function LoginPage() {
   // prettier-ignore
-  const { register, handleSubmit, formState: { errors }, } = useForm();
+  const { register, handleSubmit, formState: { errors }, } = useForm({
+    resolver: yupResolver(validationSchemaLogin),
+  });
+
   const [isRememberMe, setIsRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(null);
+  const [errorCredential, setErrorCredential] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (data) => {
     setIsLoading(true);
-    const { email, password } = data;
+    setErrorCredential(null);
     try {
       const resultAction = await dispatch(
-        login({ email, password, isRememberMe }),
+        login({
+          email: data.email,
+          password: data.password,
+          isRememberMe,
+        }),
       ).unwrap();
       console.log("User login berhasil:", resultAction);
       navigate("/");
     } catch (err) {
       if (err === "Bad credentials") {
-        setIsError("Email atau kata sandi salah");
+        setErrorCredential("Email atau kata sandi salah");
       } else {
-        setIsError("Server error");
+        setErrorCredential("Server error");
       }
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleFocus = () => {
+    setErrorCredential(null);
   };
 
   return (
@@ -53,13 +66,8 @@ function LoginPage() {
             register={register}
             nameForm="email"
             errors={errors}
-            optionsForm={{
-              required: "Email harus terisi",
-              validate: {
-                noStartingSpace: (value) =>
-                  !value.startsWith(" ") || "Tidak boleh ada spasi di awal",
-              },
-            }}
+            credentialError={errorCredential}
+            onFocus={handleFocus}
           />
           <InputText
             text="Password"
@@ -67,30 +75,20 @@ function LoginPage() {
             placeholder="Kata sandi anda"
             register={register}
             nameForm="password"
-            optionsForm={{
-              required: "Password harus terisi",
-              minLength: {
-                value: 8,
-                message: "Password minimal 8 karakter",
-              },
-              maxLength: {
-                value: 20,
-                message: "Password maksimal 20 karakter",
-              },
-              validate: {
-                noStartingSpace: (value) =>
-                  !value.startsWith(" ") || "Tidak boleh ada spasi di awal",
-              },
-            }}
             errors={errors}
+            credentialError={errorCredential}
+            handelOnFocus={handleFocus}
           />
-          {isError && <span className="text-red-600">{isError}</span>}
+          <div className="h-3">
+            {errorCredential && (
+              <span className="text-red-600">{errorCredential}</span>
+            )}
+          </div>
           <label className="cursor-pointer label justify-normal w-96">
             <input
               type="checkbox"
-              defaultChecked={isRememberMe}
-              value={isRememberMe}
-              onClick={() => setIsRememberMe(!isRememberMe)}
+              checked={isRememberMe}
+              onChange={() => setIsRememberMe(!isRememberMe)}
               className="checkbox checkbox-error"
             />
             <span className="ml-3">Remember me</span>
@@ -105,7 +103,7 @@ function LoginPage() {
           <Link
             to="/register"
             className="text-red-600 font-bold hover:text-red-600/70 transition mt-1">
-            Register
+            Daftar
           </Link>
         </div>
       </div>

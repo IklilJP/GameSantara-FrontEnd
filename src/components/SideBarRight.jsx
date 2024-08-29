@@ -23,7 +23,7 @@ function SideBarRight() {
 
   return (
     <div className="flex flex-col gap-5 px-2">
-      <h3 className="font-bold text-xl">Berita Games Terbaru</h3>
+      <h3 className="font-bold text-xl text-red-600">Berita Games Terbaru</h3>
       {content.map((item) => (
         <a
           key={item.id}

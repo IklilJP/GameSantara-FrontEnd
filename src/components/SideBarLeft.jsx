@@ -7,10 +7,12 @@ import { SlGameController } from "react-icons/sl";
 import { Link, useLocation } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import TagList from "./TagList";
+import { useSelector } from "react-redux";
 
 function SideBarLeft() {
   const [tagsItems, setTagItems] = useState([]);
   const location = useLocation();
+  const user = useSelector((state) => state.auth.user);
 
   const fetchTags = async () => {
     try {
@@ -42,10 +44,11 @@ function SideBarLeft() {
             className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname == "/terbaru" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <HiOutlineClock size={20} /> Terbaru
           </span>
-          <span
+          <Link
+            to={`/profile/${user.sub}`}
             className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname.startsWith("/profile") ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <FaUserCircle size={20} /> Profile
-          </span>
+          </Link>
         </div>
         <div className="border-t border-t-colorBorder">
           <p className="font-bold px-4 py-3 flex items-center gap-3 text-red-600">

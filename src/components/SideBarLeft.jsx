@@ -1,13 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { FaUserCircle } from "react-icons/fa";
 import { HiOutlineClock } from "react-icons/hi";
 import { IoTrendingUp } from "react-icons/io5";
 import { SlGameController } from "react-icons/sl";
 import { useLocation } from "react-router-dom";
+import axiosInstance from "../api/axiosInstance";
+import TagList from "./TagList";
 
 function SideBarLeft() {
+  const [tagsItems, setTagItems] = useState([]);
   const location = useLocation();
+
+  const fetchTags = async () => {
+    try {
+      const response = await axiosInstance.get("/tags");
+      setTagItems(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTags();
+  }, []);
 
   return (
     <div>
@@ -36,42 +52,9 @@ function SideBarLeft() {
             Topics
           </p>
           <ul className="mt-3 flex flex-col gap-6">
-            <li>
-              <button type="button" className="flex items-center gap-3 px-4">
-                <div className="bg-white rounded-full w-6 h-6 ">
-                  <img
-                    src="https://res.cloudinary.com/dpofjmzdu/image/upload/v1724832661/arcade.png"
-                    alt="Login Background"
-                    className="object-contain"
-                  />
-                </div>
-                <p>Arcade</p>
-              </button>
-            </li>
-            <li>
-              <button type="button" className="flex items-center gap-3 px-4">
-                <div className="bg-white rounded-full w-6 h-6 ">
-                  <img
-                    src="https://res.cloudinary.com/dpofjmzdu/image/upload/v1724816103/arcade.png"
-                    alt="Login Background"
-                    className="object-contain"
-                  />
-                </div>
-                <p>Arcade</p>
-              </button>
-            </li>
-            <li>
-              <button type="button" className="flex items-center gap-3 px-4">
-                <div className="bg-white rounded-full w-6 h-6 ">
-                  <img
-                    src="https://res.cloudinary.com/dpofjmzdu/image/upload/v1724816103/arcade.png"
-                    alt="Login Background"
-                    className="object-contain"
-                  />
-                </div>
-                <p>Arcade</p>
-              </button>
-            </li>
+            {tagsItems.map((item) => (
+              <TagList key={item.id} imgUrl={item.imgUrl} title={item.name} />
+            ))}
           </ul>
         </div>
       </div>

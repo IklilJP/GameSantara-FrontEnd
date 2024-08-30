@@ -24,13 +24,13 @@ function ProfilePage() {
                 <img
                   src={userDetail?.profilePicture.image}
                   alt="Profile Picture"
-                  className="rounded-full"
+                  className="rounded-full bg-cover w-28 h-28"
                 />
               ) : (
                 <img
                   src="https://res.cloudinary.com/dpofjmzdu/image/upload/v1724926159/assets/pp-notfound.jpg"
                   alt="Profile Picture"
-                  className="rounded-full"
+                  className="rounded-full bg-contain"
                 />
               )}
             </div>
@@ -72,7 +72,9 @@ function ProfilePage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     className="absolute w-36 right-11 ">
-                    <Link className="flex gap-2 bg-softBlack hover:bg-gray-600 py-2 px-3 border border-colorBorder rounded-lg transition">
+                    <Link
+                      className="flex gap-2 bg-softBlack hover:bg-gray-600 py-2 px-3 border border-colorBorder rounded-lg transition"
+                      to={"/settings"}>
                       <LiaEdit size={20} />
                       Edit Profile
                     </Link>

@@ -7,6 +7,7 @@ import ProfilePage from "./pages/ProfilePage";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchDetailUser } from "./store/authSlice";
+import UpdateProfilePage from "./pages/UpdateProfilePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/profile/:userId" element={<ProfilePage />} />
+        <Route path="/settings" element={<UpdateProfilePage />} />
       </Routes>
     </>
   );

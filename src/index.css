@@ -13,14 +13,6 @@
   ;
 }
 
-.sidebar {
-  scrollbar-width: none
-}
-
-.card-news {
-  background: linear-gradient(180deg, rgba(38, 40, 55, 0) 0%, #262837 100%);
-}
-
 /* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
   width: none
@@ -39,4 +31,113 @@
 
 .filter-red {
   filter: hue-rotate(0deg) saturate(1000%) brightness(0.7) sepia(100%) hue-rotate(0deg) saturate(5000%);
+}
+
+
+.sidebar {
+  scrollbar-width: none
+}
+
+.card-news {
+  background: linear-gradient(180deg, rgba(38, 40, 55, 0) 0%, #262837 100%);
+}
+
+/* meathball menu */
+.meatball {
+  position: relative;
+  display: block;
+  border: none;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background: none;
+  /* background-color: red; */
+  cursor: pointer;
+  transition: 0.5s ease;
+  transform: scale(0.5);
+}
+
+.meatball:hover {
+  background-color: #374151;
+}
+
+.meatball .dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: white;
+  transition: width 0.3s ease 0s, height 0.3s ease 0s, transform 0.3s ease 0.3s;
+}
+
+.meatball .dot:nth-of-type(1) {
+  transform: translate(calc(-50% - 1.2rem), -50%) rotate(45deg);
+}
+
+.meatball .dot:nth-of-type(2) {
+  transform: translate(-50%, -50%);
+  transition: 0.4s ease 0.1s;
+}
+
+.meatball .dot:nth-of-type(3) {
+  transform: translate(calc(-50% + 1.2rem), -50%) rotate(-45deg);
+}
+
+.meatball:hover .dot:nth-of-type(1) {
+  animation: flicker 0.4s linear;
+}
+
+.meatball:hover .dot:nth-of-type(2) {
+  animation: flicker 0.4s linear 0.05s;
+}
+
+.meatball:hover .dot:nth-of-type(3) {
+  animation: flicker 0.4s linear 0.1s;
+}
+
+.meatball.active {
+  transform: rotate(180deg) scale(0.5);
+}
+
+.meatball.active .dot {
+  transition: width 0.4s ease 0.3s, height 0.4s ease 0.3s, transform 0.2s ease;
+}
+
+.meatball.active .dot:nth-of-type(1) {
+  width: 3rem;
+  height: 0.4rem;
+  border-radius: 1rem;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.meatball.active .dot:nth-of-type(2) {
+  width: 0;
+  height: 0;
+}
+
+.meatball.active .dot:nth-of-type(3) {
+  width: 3rem;
+  height: 0.4rem;
+  border-radius: 1rem;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.meatball.active:hover .dot {
+  animation: none;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }

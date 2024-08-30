@@ -1,6 +1,6 @@
-import { jwtDecode } from "jwt-decode";
 import { axiosInstance } from "./axiosInstance";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const login = async (email, password, isRememberMe) => {
   try {
@@ -42,14 +42,25 @@ const logout = () => {
     setTimeout(() => {
       Cookies.remove("authToken");
       sessionStorage.removeItem("authToken");
-      resolve("Berhasil logout");
-    }, 3000);
+      resolve("Successfully logged out");
+    }, 2000);
   });
+};
+
+const getUserDetail = async () => {
+  try {
+    const response = await axiosInstance.get("/user");
+    console.log(response.data.data);
+    return response.data.data;
+  } catch (error) {
+    throw new Error("Failed to fetch user details");
+  }
 };
 
 const AuthService = {
   login,
   logout,
+  getUserDetail,
 };
 
 export default AuthService;

@@ -1,6 +1,6 @@
 import React from "react";
 import CardThread from "../components/CardThread";
-import MainLayout from "../components/Layout";
+import MainLayout from "../components/MainLayout";
 
 function HomePage() {
   return (

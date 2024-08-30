@@ -4,8 +4,18 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchDetailUser } from "./store/authSlice";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchDetailUser());
+    console.log("fetch di APP");
+  }, []);
+
   return (
     <>
       <Routes>

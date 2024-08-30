@@ -4,25 +4,25 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
 const token = Cookies.get("authToken") || sessionStorage.getItem("authToken");
-let initialState;
 
-if (token) {
-  try {
-    const decodedToken = jwtDecode(token);
-    const currentTime = Date.now() / 1000;
+const initialState = {
+  isLoggedIn: !!token,
+  userDetail: null,
+  error: null,
+};
 
-    if (decodedToken.exp > currentTime) {
-      initialState = { isLoggedIn: true, user: decodedToken, error: null };
-    } else {
-      Cookies.remove("authToken");
-      initialState = { isLoggedIn: false, user: null, error: null };
+export const fetchDetailUser = createAsyncThunk(
+  "auth/detailUser",
+  async (authData, thunkApi) => {
+    try {
+      const response = await AuthService.getUserDetail();
+
+      return response;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err.message);
     }
-  } catch (error) {
-    initialState = { isLoggedIn: false, user: null, error: null };
-  }
-} else {
-  initialState = { isLoggedIn: false, user: null, error: null };
-}
+  },
+);
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -33,6 +33,8 @@ export const login = createAsyncThunk(
         authData.password,
         authData.isRememberMe,
       );
+
+      thunkApi.dispatch(fetchDetailUser());
 
       return response;
     } catch (err) {
@@ -60,18 +62,21 @@ const authSlice = createSlice({
     builder
       .addCase(login.fulfilled, (state, action) => {
         state.isLoggedIn = true;
-        const decodedToken = jwtDecode(action.payload.data.token);
-        state.user = decodedToken;
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoggedIn = false;
-        state.user = null;
+        state.userDetail = null;
         state.error = action.payload;
+      })
+      .addCase(fetchDetailUser.fulfilled, (state, action) => {
+        state.isLoggedIn = false;
+        state.userDetail = action.payload;
+        state.error = null;
       })
       .addCase(logout.fulfilled, (state) => {
         state.isLoggedIn = false;
-        state.user = null;
+        state.userDetail = null;
         state.error = null;
       })
       .addCase(logout.rejected, (state, action) => {

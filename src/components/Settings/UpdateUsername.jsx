@@ -8,7 +8,7 @@ const UpdateUsername = () => {
         <input
           type="text"
           placeholder="Username"
-          className="input w-full max-w-xs bg-gray-700 drop-shadow-sm"
+          className="input w-full max-w-xs bg-gray-700 drop-shadow-sm border border-gray-600"
         />
       </div>
       <ButtonSetting />

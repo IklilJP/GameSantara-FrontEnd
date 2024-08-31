@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
 import { useDispatch } from "react-redux";
 import { fetchDetailUser } from "../../store/authSlice";
 import ButtonSetting from "./ButtonSetting";
 
-function FileUpload({ setIsError, setIsLoading }) {
+function FileUpload({ setIsError, setIsSuccess, setIsLoading, isLoading }) {
   const [picturePreview, setPicturePreview] = useState(null);
   const [file, setFile] = useState(null);
   const dispacth = useDispatch();
@@ -19,7 +19,7 @@ function FileUpload({ setIsError, setIsLoading }) {
 
   const handleUploadPicture = async () => {
     if (!file) {
-      console.log("No file selected");
+      setIsError("Tidak ada gambar yang dipilih");
       return;
     }
 
@@ -29,11 +29,21 @@ function FileUpload({ setIsError, setIsLoading }) {
     formData.append("picture", file);
 
     try {
-      await axiosInstance.patch("/user/profile-pictur", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      const response = await axiosInstance.patch(
+        "/user/profile-picture",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         },
-      });
+      );
+
+      console.log(response.data.status);
+
+      if (response.data.status === 200) {
+        setIsSuccess("Profile Berhasil Diperbarui");
+      }
 
       dispacth(fetchDetailUser());
     } catch (error) {
@@ -97,7 +107,7 @@ function FileUpload({ setIsError, setIsLoading }) {
           </label>
         </div>
       </div>
-      <ButtonSetting handleButton={handleUploadPicture} />
+      <ButtonSetting handleButton={handleUploadPicture} isLoading={isLoading} />
     </div>
   );
 }

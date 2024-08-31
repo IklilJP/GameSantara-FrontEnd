@@ -1,12 +1,17 @@
+import ButtonSetting from "./ButtonSetting";
+
 const UpdateUsername = () => {
   return (
     <div className="py-6">
+      <h2 className="font-bold text-lg  mb-5">Username</h2>
       <div>
         <input
           type="text"
-          className="bg-gray-700 py-3 px-4 w-96 h-[14px] rounded-lg"
+          placeholder="Username"
+          className="input w-full max-w-xs bg-gray-700 drop-shadow-sm"
         />
       </div>
+      <ButtonSetting />
     </div>
   );
 };

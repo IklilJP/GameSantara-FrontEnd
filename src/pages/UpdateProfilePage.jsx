@@ -18,7 +18,7 @@ const UpdateProfilePage = () => {
           className="py-12 h-auto">
           <FileUpload setIsLoading={setIsLoading} setIsError={setIsError} />
 
-          <span className="border border-colorBorder w-full block"></span>
+          <span className="border-t border-t-colorBorder w-full block"></span>
 
           <UpdateUsername />
 

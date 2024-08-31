@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import axiosInstance from "../api/axiosInstance";
+import axiosInstance from "../../api/axiosInstance";
+import { useDispatch } from "react-redux";
+import { fetchDetailUser } from "../../store/authSlice";
 
-function FileUpload() {
+function FileUpload({ setIsError, setIsLoading }) {
   const [picturePreview, setPicturePreview] = useState(null);
   const [file, setFile] = useState(null);
+  const dispacth = useDispatch();
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -14,34 +17,39 @@ function FileUpload() {
   };
 
   const handleUploadPicture = async () => {
-    console.log(file);
     if (!file) {
       console.log("No file selected");
       return;
     }
 
+    setIsLoading(true);
+
     const formData = new FormData();
     formData.append("picture", file);
 
     try {
-      await axiosInstance.patch("/user/profile-picture", formData, {
+      await axiosInstance.patch("/user/profile-pictur", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Picture uploaded successfully");
+
+      dispacth(fetchDetailUser());
     } catch (error) {
-      console.error("Error uploading picture:", error.response.data.message);
+      setIsError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col py-6">
+      <h2 className="font-bold text-lg  mb-5">Foto Profil</h2>
       <div className="flex items-center justify-center w-[200px] h-[200px]">
         <div className="border-4 border-dotted border-gray-700 w-full h-full p-2 flex justify-center">
           <label
             htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
+            className="flex flex-col items-center justify-center w-full rounded-lg cursor-pointer bg-gray-500 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               {picturePreview ? (
                 <div className="w-[180px] h-[180px]">
@@ -74,7 +82,7 @@ function FileUpload() {
                     <span>drag and drop</span>
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG, JPG or GIF
+                    SVG, PNG, JPG or GIF, JPEG
                   </p>
                 </>
               )}
@@ -88,11 +96,11 @@ function FileUpload() {
           </label>
         </div>
       </div>
-      <div className="my-3">
+      <div className="mt-6">
         <button
           onClick={handleUploadPicture}
           className="hover:before:bg-red rounded-2xl relative overflow-hidden border border-red-600 px-8 py-1 text-red-600 shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-red-600 before:transition-all before:duration-300 hover:text-white hover:shadow-red-600 hover:before:left-0 hover:before:w-full">
-          <span className="relative z-10">Ganti</span>
+          <span className="relative z-10 font-bold">Ganti</span>
         </button>
       </div>
     </div>

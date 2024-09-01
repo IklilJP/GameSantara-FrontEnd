@@ -4,10 +4,11 @@ import { useDispatch } from "react-redux";
 import { fetchDetailUser } from "../../store/authSlice";
 import ButtonSetting from "./ButtonSetting";
 
-function FileUpload({ setIsError, setIsSuccess, setIsLoading, isLoading }) {
+function UpdateProfilePicture({ setIsError, setIsSuccess }) {
   const [picturePreview, setPicturePreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(null);
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -45,7 +46,7 @@ function FileUpload({ setIsError, setIsSuccess, setIsLoading, isLoading }) {
         setIsSuccess("Profile Berhasil Diperbarui");
       }
 
-      dispacth(fetchDetailUser());
+      dispatch(fetchDetailUser());
     } catch (error) {
       setIsError(error.message);
     } finally {
@@ -112,4 +113,4 @@ function FileUpload({ setIsError, setIsSuccess, setIsLoading, isLoading }) {
   );
 }
 
-export default FileUpload;
+export default UpdateProfilePicture;

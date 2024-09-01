@@ -1,14 +1,13 @@
 import { useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
-import ButtonSetting from "./ButtonSetting";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDetailUser } from "../../store/authSlice";
 import UpdateInputForm from "./UpdateInputForm";
 
-const UpdateUsername = ({ setIsError, setIsSuccess }) => {
+const UpdateFullName = ({ setIsError, setIsSuccess }) => {
   const user = useSelector((state) => state.auth.userDetail);
-  const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleUpdateUsername = async () => {
@@ -17,23 +16,23 @@ const UpdateUsername = ({ setIsError, setIsSuccess }) => {
       return;
     }
 
-    if (user?.username === inputValue) {
-      setIsError("Username tidak boleh sama dengan yang sebelumnya");
+    if (user?.fullName === inputValue) {
+      setIsError("FullName tidak boleh sama dengan yang sebelumnya");
       return;
     }
 
     setIsLoading(true);
     try {
-      const response = await axiosInstance.patch("/user/username", {
-        username: inputValue,
+      const response = await axiosInstance.patch("/user/fullname", {
+        fullName: inputValue,
       });
 
       if (response.data.status === 200) {
-        setIsSuccess("Username berhasil diperbarui");
+        setIsSuccess("FullName berhasil diperbarui");
         dispatch(fetchDetailUser());
       }
     } catch (error) {
-      setIsError(error.message);
+      setIsError(error);
     } finally {
       setIsLoading(false);
     }
@@ -42,14 +41,14 @@ const UpdateUsername = ({ setIsError, setIsSuccess }) => {
   return (
     <div>
       <UpdateInputForm
-        title={"Username"}
+        title={"FullName"}
         isLoading={isLoading}
         handleButton={handleUpdateUsername}
-        defaultValue={user?.username}
+        defaultValue={user?.fullName}
         setInputValue={setInputValue}
       />
     </div>
   );
 };
 
-export default UpdateUsername;
+export default UpdateFullName;

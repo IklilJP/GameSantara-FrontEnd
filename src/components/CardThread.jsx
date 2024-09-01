@@ -50,7 +50,7 @@ function CardThread() {
             aliquid itaque? Laborum magnam excepturi cupiditate tempora error
             repellendus autem possimus.
           </p>
-          <span className="absolute bottom-0 right-0 text-blue-800 bg-gradient-to-r from-transparent from-5% to-softBlack to-15% w-52 text-right">
+          <span className="absolute bottom-0 right-0 text-blue-700 bg-gradient-to-r from-transparent from-5% to-softBlack to-20% w-52 text-right">
             Lihat selengkapnya...
           </span>
         </div>

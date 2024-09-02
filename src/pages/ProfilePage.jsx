@@ -83,6 +83,9 @@ function ProfilePage() {
             </div>
           </div>
         </div>
+        <div className="px-16 mt-6 max-w-xs">
+          <span className="text-white">{userDetail?.bio}</span>
+        </div>
         <div className="mt-10 border-t border-t-gray-700">
           <div className="flex gap-4 justify-center w-5/12 mx-auto">
             <div className="flex justify-center px-3 py-1 border-t border-t-red-600">

@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchDetailUser } from "./store/authSlice";
 import SettingProfilePage from "./pages/SettingProfilePage";
+import CreateThreadPage from "./pages/CreateThreadPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingProfilePage />} />
+        <Route path="/create/thread" element={<CreateThreadPage />} />
       </Routes>
     </>
   );

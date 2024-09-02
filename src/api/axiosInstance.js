@@ -2,9 +2,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export const axiosInstance = axios.create({
-  // baseURL: "http://10.10.102.115:8080/api", // IP Mirza
+  baseURL: "http://10.10.102.115:8080/api", // IP Mirza
   // baseURL: "http://10.10.102.137:8080/api", // IP PM Iklil
-  baseURL: "http://localhost:8080/api", // My IP
+  // baseURL: "http://localhost:8080/api", // My IP
 });
 
 axiosInstance.interceptors.request.use(

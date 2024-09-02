@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../store/authSlice";
 import { RiEditBoxLine } from "react-icons/ri";
+import { FiPlus } from "react-icons/fi";
 
 function Navbar() {
   const [navModal, setNavModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const userDetail = useSelector((state) => state.auth.userDetail);
-  console.log(userDetail?.id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -55,12 +55,17 @@ function Navbar() {
       </div>
 
       <nav className="flex w-4/12 justify-end">
-        <div className="p-2 transition group">
-          <IoAddSharp
-            size={25}
-            className="group-hover:text-red-600 transition"
+        <Link
+          className="p-2 transition group flex justify-center items-center gap-1 bg-softBlack rounded-3xl hover:bg-gray-700"
+          to={"/create/thread"}>
+          <FiPlus
+            size={20}
+            className="group-hover:text-red-600 transition font-bold"
           />
-        </div>
+          <span className="font-bold group-hover:text-red-600 transition px-2">
+            Thread
+          </span>
+        </Link>
         <AnimatePresence>
           <div className="relative">
             <button

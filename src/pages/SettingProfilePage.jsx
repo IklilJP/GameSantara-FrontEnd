@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import UpdateUsername from "../components/Settings/UpdateUsername";
 import UpdateProfilePicture from "../components/Settings/UpdateProfilePicture";
 import UpdateFullName from "../components/Settings/UpdateFullName";
+import UpdateBio from "../components/Settings/UpdateBio";
 
 const SettingProfilePage = () => {
   const [isError, setIsError] = useState(null);
@@ -29,9 +30,14 @@ const SettingProfilePage = () => {
         <span className="border-t border-t-colorBorder w-full block"></span>
 
         <UpdateUsername setIsSuccess={setIsSuccess} setIsError={setIsError} />
+
         <span className="border-t border-t-colorBorder w-full block"></span>
 
         <UpdateFullName setIsSuccess={setIsSuccess} setIsError={setIsError} />
+
+        <span className="border-t border-t-colorBorder w-full block"></span>
+
+        <UpdateBio setIsSuccess={setIsSuccess} setIsError={setIsError} />
 
         <AnimatePresence>
           {isSuccess || isError ? (

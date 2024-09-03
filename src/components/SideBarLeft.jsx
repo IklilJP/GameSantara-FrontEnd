@@ -45,7 +45,7 @@ function SideBarLeft() {
             <HiOutlineClock size={20} /> Terbaru
           </span>
           <Link
-            to={`/profile/${user?.id}`}
+            to={`/user/${user?.id}`}
             className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname.startsWith("/profile") ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <FaUserCircle size={20} /> Profile
           </Link>

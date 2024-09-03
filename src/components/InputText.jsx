@@ -12,7 +12,7 @@ function InputText({
   handelOnFocus,
 }) {
   return (
-    <div className="w-96">
+    <div className="lg:w-96 w-72">
       <label className="form-control w-full max-w-lg h-[100px]">
         <div className="label">
           <span className="label-text">{text}</span>

@@ -88,10 +88,10 @@ function UpdateProfilePicture({ setIsError, setIsSuccess }) {
                     />
                   </svg>
                   <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 text-center">
-                    <span className="font-semibold">Click to upload</span>
-                    <br /> or
+                    <span className="font-semibold">Klik untuk upload</span>
+                    <br /> atau
                     <br />
-                    <span>drag and drop</span>
+                    <span>drag dan drop</span>
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     SVG, PNG, JPG or GIF, JPEG

@@ -50,6 +50,20 @@ export default function CreateThreadPage() {
         </div>
 
         <div className="py-6">
+          <h2 className="font-bold text-lg mb-5">Tag</h2>
+          <select className="select w-full max-w-md bg-gray-700">
+            <option disabled selected>
+              Pilih Tag
+            </option>
+            <option>Homer</option>
+            <option>Marge</option>
+            <option>Bart</option>
+            <option>Lisa</option>
+            <option>Maggie</option>
+          </select>
+        </div>
+
+        <div className="py-6">
           <h2 className="font-bold text-lg mb-5">Gambar</h2>
           <div className="flex items-center justify-center w-[200px] h-[200px]">
             <div className="border-4 border-dotted border-gray-700 w-full h-full p-2 flex justify-center">
@@ -72,10 +86,10 @@ export default function CreateThreadPage() {
                     />
                   </svg>
                   <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 text-center">
-                    <span className="font-semibold">Click to upload</span>
-                    <br /> or
+                    <span className="font-semibold">Klik Untuk Upload</span>
+                    <br /> atau
                     <br />
-                    <span>drag and drop</span>
+                    <span>drag dan drop</span>
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     SVG, PNG, JPG or GIF, JPEG

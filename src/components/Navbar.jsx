@@ -85,7 +85,7 @@ function Navbar() {
                   className="border border-colorBorder rounded-md absolute -right-8 top-12 bg-black shadow-lg ">
                   <li>
                     <Link
-                      to={`/profile/${userDetail?.id}`}
+                      to={`/user/${userDetail?.id}`}
                       className="flex items-center gap-4 px-4 py-2 border-b border-colorBorder hover:bg-gray-700 transition">
                       <FaUser /> Profile
                     </Link>

@@ -1,18 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainLayout from "../components/MainLayout";
 import CardThread from "../components/CardThread";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { PiArrowFatUpBold, PiShareFat } from "react-icons/pi";
 import MeatballMenu from "../components/MeatballMenu";
 import { useSelector } from "react-redux";
 import { LiaEdit } from "react-icons/lia";
 import { AnimatePresence, motion } from "framer-motion";
-import { FaDove } from "react-icons/fa";
+import axiosInstance from "../api/axiosInstance";
 
 function ProfilePage() {
+  const userLogin = useSelector((state) => state.auth.userDetail);
   const [isMenu, setIsMenu] = useState(false);
-  const userDetail = useSelector((state) => state.auth.userDetail);
+  const [userDetail, setUserDetail] = useState({});
+  const { userId } = useParams();
+
+  useEffect(() => {
+    if (userId === userLogin?.id) {
+      setUserDetail(userLogin);
+    } else {
+      axiosInstance.get(`/user/${userId}`).then((res) => console.log(res.data));
+    }
+  }, [userDetail, userLogin]);
 
   return (
     <MainLayout>

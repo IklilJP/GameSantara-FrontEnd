@@ -119,7 +119,7 @@ const DetailThreadPage = () => {
                 ) : (
                   <PiArrowFatUpBold />
                 )}
-                <span>{threadDetail.upVotesCount}</span>
+                <span className="font-bold">{threadDetail.upVotesCount}</span>
               </button>
               <span className="bg-gray-600 w-[1px]"></span>
               <button
@@ -141,13 +141,13 @@ const DetailThreadPage = () => {
                 ) : (
                   <PiArrowFatDownBold />
                 )}
-                <span>{threadDetail.downVotesCount}</span>
+                <span className="font-bold">{threadDetail.downVotesCount}</span>
               </button>
             </div>
             <button className="flex bg-[#30353B] px-4 py-1 max-w-32 rounded-3xl justify-around gap-1">
               <div className="flex items-center gap-2">
                 <FaRegMessage />
-                <span>{threadDetail.commentsCount}</span>
+                <span className="font-bold">{threadDetail.commentsCount}</span>
               </div>
             </button>
             <AnimatePresence>

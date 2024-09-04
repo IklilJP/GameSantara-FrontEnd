@@ -116,7 +116,7 @@ function CardThread({ posts, setPosts }) {
                   )
                 }>
                 {item.isUpVoted ? <PiArrowFatUpFill /> : <PiArrowFatUpBold />}
-                <span>{item.upVotesCount}</span>
+                <span className="font-bold">{item.upVotesCount}</span>
               </button>
               <span className="bg-gray-600 w-[1px]"></span>
               <button
@@ -138,13 +138,13 @@ function CardThread({ posts, setPosts }) {
                 ) : (
                   <PiArrowFatDownBold />
                 )}
-                <span>{item.downVotesCount}</span>
+                <span className="font-bold">{item.downVotesCount}</span>
               </button>
             </div>
             <button className="flex bg-[#30353B] px-4 py-1 max-w-32 rounded-3xl justify-around gap-1">
               <div className="flex items-center gap-2">
                 <FaRegMessage />
-                <span>{item.commentsCount}</span>
+                <span className="font-bold">{item.commentsCount}</span>
               </div>
             </button>
             <AnimatePresence>

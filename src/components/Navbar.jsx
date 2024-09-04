@@ -33,7 +33,7 @@ function Navbar() {
     <header className="fixed z-50 w-full flex justify-around items-center px-96 py-1 border-b border-b-colorBorder shadow-lg bg-black">
       <div className="w-4/12 ">
         <div className="w-[180px]">
-          <Link>
+          <Link to={"/"}>
             <img
               src="https://res.cloudinary.com/dpofjmzdu/image/upload/v1724813277/logo-header.png"
               alt="Game Santara"

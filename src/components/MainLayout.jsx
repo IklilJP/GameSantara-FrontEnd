@@ -4,9 +4,9 @@ import SideBarRight from "./SideBarRight";
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="mx-auto h-screen overflow-hidden">
+    <div className="mx-auto h-screen">
       <Navbar />
-      <div className="flex gap-4 pt-10 h-full overflow-y-auto">
+      <div id="scrollMain" className="flex gap-4 pt-10 h-full overflow-y-auto">
         <div className="sidebar w-[10%] fixed left-[19%] top-16 bottom-0 overflow-y-auto">
           <SideBarLeft />
         </div>

@@ -60,3 +60,17 @@ export const validationSchemaLogin = Yup.object().shape({
     .max(20, "Password maksimal 20 karakter")
     .matches(/^\S*$/, "Tidak boleh ada spasi di awal"),
 });
+
+export const validationCreateThread = Yup.object().shape({
+  title: Yup.string().required("Judul thread diperlukan"),
+  description: Yup.string().required("Deskripsi thread diperlukan"),
+  tag: Yup.string().required("Tag diperlukan"),
+  file: Yup.array().of(
+    Yup.mixed().test("fileSize", "Ukuran file terlalu besar", (file) => {
+      if (file) {
+        return file.size <= 2 * 1024 * 1024; // 2MB max size
+      }
+      return true;
+    }),
+  ),
+});

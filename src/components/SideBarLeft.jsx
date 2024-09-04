@@ -46,7 +46,7 @@ function SideBarLeft() {
           </span>
           <Link
             to={`/user/${user?.id}`}
-            className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname.startsWith("/profile") ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
+            className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname.startsWith("/user") ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <FaUserCircle size={20} /> Profile
           </Link>
         </div>

@@ -4,16 +4,22 @@ import { FaRegMessage } from "react-icons/fa6";
 import { HiLink } from "react-icons/hi";
 import {
   PiArrowFatDownBold,
+  PiArrowFatDownFill,
   PiArrowFatUpBold,
+  PiArrowFatUpFill,
   PiShareFat,
 } from "react-icons/pi";
 import { id } from "date-fns/locale";
 import { formatDistanceToNowStrict } from "date-fns";
 import axiosInstance from "../api/axiosInstance";
+import { useSelector } from "react-redux";
+import Alert from "./Alert";
 
 function CardThread({ posts, setPosts }) {
   const [modalShare, setModalShare] = useState(null);
   const bodyRef = useRef(null);
+  const userLogin = useSelector((state) => state.auth.userDetail);
+  const [isError, setIsError] = useState(null);
 
   const handleCopy = (url) => {
     navigator.clipboard.writeText(url);
@@ -23,7 +29,10 @@ function CardThread({ posts, setPosts }) {
     setModalShare((prev) => (prev === postId ? null : postId));
   };
 
-  const handleUpvote = async (postId) => {
+  const handleUpvote = async (postId, isUpVoted, isDownVoted) => {
+    if (!userLogin) {
+      setIsError("Silahkan login terlebih dahulu");
+    }
     try {
       const response = await axiosInstance.post(
         `/vote-posts/${postId}/up-vote`,
@@ -34,8 +43,14 @@ function CardThread({ posts, setPosts }) {
             post.id === postId
               ? {
                   ...post,
-                  upVotesCount: post.upVotesCount + 1,
-                  isUpVoted: true,
+                  upVotesCount: isUpVoted
+                    ? post.upVotesCount - 1
+                    : post.upVotesCount + 1,
+                  isUpVoted: !isUpVoted,
+                  downVotesCount: isDownVoted
+                    ? post.downVotesCount - 1
+                    : post.downVotesCount,
+                  isDownVoted: false,
                 }
               : post,
           ),
@@ -46,7 +61,10 @@ function CardThread({ posts, setPosts }) {
     }
   };
 
-  const handleDownvote = async (postId) => {
+  const handleDownvote = async (postId, isDownVoted, isUpVoted) => {
+    if (!userLogin) {
+      setIsError("Silahkan login terlebih dahulu");
+    }
     try {
       const response = await axiosInstance.post(
         `/vote-posts/${postId}/down-vote`,
@@ -57,8 +75,14 @@ function CardThread({ posts, setPosts }) {
             post.id === postId
               ? {
                   ...post,
-                  downVotesCount: post.downVotesCount + 1,
-                  isDownVoted: true,
+                  downVotesCount: isDownVoted
+                    ? post.downVotesCount - 1
+                    : post.downVotesCount + 1,
+                  isDownVoted: !isDownVoted,
+                  upVotesCount: isUpVoted
+                    ? post.upVotesCount - 1
+                    : post.upVotesCount,
+                  isUpVoted: false,
                 }
               : post,
           ),
@@ -68,6 +92,14 @@ function CardThread({ posts, setPosts }) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsError(null);
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, [isError]);
 
   return (
     <>
@@ -126,22 +158,30 @@ function CardThread({ posts, setPosts }) {
             </div>
           </div>
           <div className="flex gap-3 mt-2">
-            <div className="flex bg-[#30353B] px-4 py-1 w-32 rounded-3xl justify-around gap-1">
+            <div className="flex bg-[#30353B] w-32 rounded-3xl justify-around gap-1">
               <button
-                className={`flex items-center gap-2 ${
+                className={`flex items-center gap-2 pl-4 py-1  ${
                   item.isUpVoted ? "text-red-600" : ""
                 }`}
-                onClick={() => handleUpvote(item.id)}>
-                <PiArrowFatUpBold />
+                onClick={() =>
+                  handleUpvote(item.id, item.isUpVoted, item.isDownVoted)
+                }>
+                {item.isUpVoted ? <PiArrowFatUpFill /> : <PiArrowFatUpBold />}
                 <span>{item.upVotesCount}</span>
               </button>
               <span className="bg-gray-600 w-[1px]"></span>
               <button
-                className={`flex items-center gap-2 ${
+                className={`flex items-center gap-2 pr-4 py-1 ${
                   item.isDownVoted ? "text-blue-600" : ""
                 }`}
-                onClick={() => handleDownvote(item.id)}>
-                <PiArrowFatDownBold />
+                onClick={() =>
+                  handleDownvote(item.id, item.isDownVoted, item.isUpVoted)
+                }>
+                {item.isDownVoted ? (
+                  <PiArrowFatDownFill />
+                ) : (
+                  <PiArrowFatDownBold />
+                )}
                 <span>{item.downVotesCount}</span>
               </button>
             </div>
@@ -179,6 +219,13 @@ function CardThread({ posts, setPosts }) {
           </div>
         </div>
       ))}
+      <AnimatePresence>
+        {isError && (
+          <div>
+            <Alert isError={isError} />
+          </div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

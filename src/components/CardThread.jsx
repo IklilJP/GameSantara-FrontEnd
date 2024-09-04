@@ -109,6 +109,7 @@ function CardThread({ posts, setPosts }) {
                   handleUpvote(
                     event,
                     setPosts,
+                    setIsError,
                     item.id,
                     item.isUpVoted,
                     item.isDownVoted,
@@ -127,6 +128,7 @@ function CardThread({ posts, setPosts }) {
                   handleDownvote(
                     event,
                     setPosts,
+                    setIsError,
                     item.id,
                     item.isDownVoted,
                     item.isUpVoted,
@@ -176,11 +178,7 @@ function CardThread({ posts, setPosts }) {
         </Link>
       ))}
       <AnimatePresence>
-        {isError && (
-          <div>
-            <Alert isError={isError} />
-          </div>
-        )}
+        {isError && <Alert isError={isError} />}
       </AnimatePresence>
     </>
   );

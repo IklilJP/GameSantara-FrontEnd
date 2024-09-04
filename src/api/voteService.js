@@ -3,6 +3,7 @@ import axiosInstance from "./axiosInstance";
 export const handleUpvote = async (
   event,
   setPosts,
+  setIsError,
   postId,
   isUpVoted,
   isDownVoted,
@@ -13,6 +14,7 @@ export const handleUpvote = async (
 
   if (!userLogin) {
     setIsError("Silahkan login terlebih dahulu");
+    return;
   }
   try {
     const response = await axiosInstance.post(`/vote-posts/${postId}/up-vote`);
@@ -43,6 +45,7 @@ export const handleUpvote = async (
 export const handleDownvote = async (
   event,
   setPosts,
+  setIsError,
   postId,
   isDownVoted,
   isUpVoted,
@@ -53,7 +56,9 @@ export const handleDownvote = async (
 
   if (!userLogin) {
     setIsError("Silahkan login terlebih dahulu");
+    return;
   }
+
   try {
     const response = await axiosInstance.post(
       `/vote-posts/${postId}/down-vote`,
@@ -85,6 +90,7 @@ export const handleDownvote = async (
 export const handleUpvoteDetail = async (
   event,
   setThreadDetail,
+  setIsError,
   postId,
   isUpVoted,
   isDownVoted,
@@ -93,7 +99,7 @@ export const handleUpvoteDetail = async (
   event.stopPropagation();
 
   if (!userLogin) {
-    alert("Silahkan login terlebih dahulu");
+    setIsError("Silahkan login terlebih dahulu");
     return;
   }
 
@@ -120,6 +126,7 @@ export const handleUpvoteDetail = async (
 export const handleDownvoteDetail = async (
   event,
   setThreadDetail,
+  setIsError,
   postId,
   isDownVoted,
   isUpVoted,
@@ -128,7 +135,7 @@ export const handleDownvoteDetail = async (
   event.stopPropagation();
 
   if (!userLogin) {
-    alert("Silahkan login terlebih dahulu");
+    setIsError("Silahkan login terlebih dahulu");
     return;
   }
 

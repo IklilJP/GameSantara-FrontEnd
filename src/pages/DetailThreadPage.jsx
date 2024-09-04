@@ -16,12 +16,15 @@ import { FaRegMessage } from "react-icons/fa6";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { handleDownvoteDetail, handleUpvoteDetail } from "../api/voteService";
+import Linkify from "linkify-react";
+import Alert from "../components/Alert";
 
 const DetailThreadPage = () => {
   const { postId } = useParams();
   const [threadDetail, setThreadDetail] = useState({});
   const [modalShare, setModalShare] = useState(null);
   const userLogin = useSelector((state) => state.auth.userDetail);
+  const [isError, setIsError] = useState(null);
 
   const handleModalShare = (postId) => {
     setModalShare((prev) => (prev === postId ? null : postId));
@@ -30,6 +33,14 @@ const DetailThreadPage = () => {
   const fetchDataDetail = () => {
     fetchThreadDetailService(postId, setThreadDetail);
   };
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setIsError(null);
+    }, 2000);
+
+    return () => clearTimeout(timeOut);
+  }, [isError]);
 
   useEffect(() => {
     fetchDataDetail();
@@ -81,9 +92,15 @@ const DetailThreadPage = () => {
         <div className="w-full">
           <div className="mt-2">
             <h2 className="font-bold text-xl my-2">{threadDetail.title}</h2>
-            <p className="leading-5 text-sm subpixel-antialiased">
-              {threadDetail.body}
-            </p>
+            <Linkify
+              options={{
+                defaultProtocol: "https",
+                className: "text-blue-600",
+              }}>
+              <p className="leading-5 text-sm subpixel-antialiased">
+                {threadDetail.body}
+              </p>
+            </Linkify>
           </div>
 
           <div className="mt-2 flex flex-col gap-4">
@@ -108,6 +125,7 @@ const DetailThreadPage = () => {
                   handleUpvoteDetail(
                     event,
                     setThreadDetail,
+                    setIsError,
                     threadDetail.id,
                     threadDetail.isUpVoted,
                     threadDetail.isDownVoted,
@@ -130,6 +148,7 @@ const DetailThreadPage = () => {
                   handleDownvoteDetail(
                     event,
                     setThreadDetail,
+                    setIsError,
                     threadDetail.id,
                     threadDetail.isDownVoted,
                     threadDetail.isUpVoted,
@@ -178,6 +197,9 @@ const DetailThreadPage = () => {
           </div>
         </div>
       </div>
+      <AnimatePresence>
+        {isError && <Alert isError={isError} />}
+      </AnimatePresence>
     </MainLayout>
   );
 };

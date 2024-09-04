@@ -11,7 +11,7 @@ import SettingProfilePage from "./pages/SettingProfilePage";
 import CreateThreadPage from "./pages/CreateThreadPage";
 import TrendingPage from "./pages/TrendingPage";
 import LatestPage from "./pages/LatestPage";
-import DetailPostPage from "./pages/DetailPostPage";
+import DetailThreadPage from "./pages/DetailThreadPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/trending" element={<TrendingPage />} />
         <Route path="/terbaru" element={<LatestPage />} />
-        <Route path="/thread/:postId" element={<DetailPostPage />} />
+        <Route path="/thread/:postId" element={<DetailThreadPage />} />
         <Route path="/user/:userId" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingProfilePage />} />
         <Route path="/create/thread" element={<CreateThreadPage />} />

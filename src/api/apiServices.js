@@ -27,3 +27,13 @@ export const fetchDataService = async (
     }
   }
 };
+
+export const fetchThreadDetailService = async (postId, setThreadDetail) => {
+  try {
+    const response = await axiosInstance.get(`/post/${postId}`);
+
+    setThreadDetail(response.data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};

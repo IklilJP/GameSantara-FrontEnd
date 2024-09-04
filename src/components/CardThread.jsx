@@ -11,9 +11,10 @@ import {
 } from "react-icons/pi";
 import { id } from "date-fns/locale";
 import { formatDistanceToNowStrict } from "date-fns";
-import axiosInstance from "../api/axiosInstance";
 import { useSelector } from "react-redux";
 import Alert from "./Alert";
+import { Link } from "react-router-dom";
+import { handleDownvote, handleUpvote } from "../api/voteService";
 
 function CardThread({ posts, setPosts }) {
   const [modalShare, setModalShare] = useState(null);
@@ -29,70 +30,6 @@ function CardThread({ posts, setPosts }) {
     setModalShare((prev) => (prev === postId ? null : postId));
   };
 
-  const handleUpvote = async (postId, isUpVoted, isDownVoted) => {
-    if (!userLogin) {
-      setIsError("Silahkan login terlebih dahulu");
-    }
-    try {
-      const response = await axiosInstance.post(
-        `/vote-posts/${postId}/up-vote`,
-      );
-      if (response.status === 200) {
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId
-              ? {
-                  ...post,
-                  upVotesCount: isUpVoted
-                    ? post.upVotesCount - 1
-                    : post.upVotesCount + 1,
-                  isUpVoted: !isUpVoted,
-                  downVotesCount: isDownVoted
-                    ? post.downVotesCount - 1
-                    : post.downVotesCount,
-                  isDownVoted: false,
-                }
-              : post,
-          ),
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleDownvote = async (postId, isDownVoted, isUpVoted) => {
-    if (!userLogin) {
-      setIsError("Silahkan login terlebih dahulu");
-    }
-    try {
-      const response = await axiosInstance.post(
-        `/vote-posts/${postId}/down-vote`,
-      );
-      if (response.status === 200) {
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId
-              ? {
-                  ...post,
-                  downVotesCount: isDownVoted
-                    ? post.downVotesCount - 1
-                    : post.downVotesCount + 1,
-                  isDownVoted: !isDownVoted,
-                  upVotesCount: isUpVoted
-                    ? post.upVotesCount - 1
-                    : post.upVotesCount,
-                  isUpVoted: false,
-                }
-              : post,
-          ),
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsError(null);
@@ -104,7 +41,10 @@ function CardThread({ posts, setPosts }) {
   return (
     <>
       {posts.map((item) => (
-        <div key={item.id} className="my-3 bg-softBlack p-4 rounded-md">
+        <Link
+          to={`/thread/${item.id}`}
+          key={item.id}
+          className="my-3 bg-softBlack p-4 rounded-md block">
           <div className="flex items-center gap-x-3">
             <div className="w-8 rounded-full">
               <img
@@ -135,9 +75,11 @@ function CardThread({ posts, setPosts }) {
             </div>
           </div>
           <div className="my-5">
-            <h2 className="font-bold text-lg">{item.title}</h2>
+            <h2 className="font-bold text-lg leading-6">{item.title}</h2>
             <div className="relative mt-1">
-              <p ref={bodyRef} className="line-clamp-3 whitespace-pre-line">
+              <p
+                ref={bodyRef}
+                className="line-clamp-3 whitespace-pre-line text-sm leading-5">
                 {item.body}
               </p>
             </div>
@@ -157,25 +99,39 @@ function CardThread({ posts, setPosts }) {
               ))}
             </div>
           </div>
-          <div className="flex gap-3 mt-2">
-            <div className="flex bg-[#30353B] w-32 rounded-3xl justify-around gap-1">
+          <div className="flex mt-2 gap-4">
+            <div className="flex justify-around">
               <button
-                className={`flex items-center gap-2 pl-4 py-1  ${
+                className={`flex bg-[#30353B] items-center gap-2 px-4 py-1 rounded-l-2xl hover:bg-black transition ${
                   item.isUpVoted ? "text-red-600" : ""
                 }`}
-                onClick={() =>
-                  handleUpvote(item.id, item.isUpVoted, item.isDownVoted)
+                onClick={(event) =>
+                  handleUpvote(
+                    event,
+                    setPosts,
+                    item.id,
+                    item.isUpVoted,
+                    item.isDownVoted,
+                    userLogin,
+                  )
                 }>
                 {item.isUpVoted ? <PiArrowFatUpFill /> : <PiArrowFatUpBold />}
                 <span>{item.upVotesCount}</span>
               </button>
               <span className="bg-gray-600 w-[1px]"></span>
               <button
-                className={`flex items-center gap-2 pr-4 py-1 ${
+                className={`flex bg-[#30353B] items-center gap-2 px-4 py-1 rounded-r-2xl hover:bg-black transition ${
                   item.isDownVoted ? "text-blue-600" : ""
                 }`}
-                onClick={() =>
-                  handleDownvote(item.id, item.isDownVoted, item.isUpVoted)
+                onClick={(event) =>
+                  handleDownvote(
+                    event,
+                    setPosts,
+                    item.id,
+                    item.isDownVoted,
+                    item.isUpVoted,
+                    userLogin,
+                  )
                 }>
                 {item.isDownVoted ? (
                   <PiArrowFatDownFill />
@@ -217,7 +173,7 @@ function CardThread({ posts, setPosts }) {
               </div>
             </AnimatePresence>
           </div>
-        </div>
+        </Link>
       ))}
       <AnimatePresence>
         {isError && (

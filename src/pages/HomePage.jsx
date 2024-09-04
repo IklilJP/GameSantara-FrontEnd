@@ -11,7 +11,7 @@ function HomePage() {
   const [hasMore, setHasMore] = useState(true);
   const isInitialLoad = useRef(true);
 
-  const fetchDataPosts = async () => {
+  const fetchDataPosts = () => {
     fetchDataService(page, null, hasMore, setPosts, setPage, setHasMore);
   };
 

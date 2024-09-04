@@ -33,22 +33,22 @@ function SideBarLeft() {
         <div className="flex flex-col gap-3 py-6">
           <Link
             to={"/"}
-            className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname == "/" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
+            className={`flex items-center gap-3 text-md px-4 leading-5 py-3 transition ${location.pathname == "/" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <AiOutlineHome size={20} /> Home
           </Link>
           <Link
             to={"/trending"}
-            className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname == "/trending" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
+            className={`flex items-center gap-3 text-md px-4 leading-5 py-3 transition ${location.pathname == "/trending" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <IoTrendingUp size={20} /> Trending
           </Link>
           <Link
             to={"/terbaru"}
-            className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname == "/terbaru" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
+            className={`flex items-center gap-3 text-md px-4 leading-5 py-3 transition ${location.pathname == "/terbaru" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <HiOutlineClock size={20} /> Terbaru
           </Link>
           <Link
             to={`/user/${user?.id}`}
-            className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname.startsWith("/user") ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
+            className={`flex items-center gap-3 text-md px-4 leading-5 py-3 transition ${location.pathname.startsWith("/user") ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <FaUserCircle size={20} /> Profile
           </Link>
         </div>

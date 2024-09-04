@@ -5,14 +5,14 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchDataService } from "../api/apiServices";
 import { MdScubaDiving } from "react-icons/md";
 
-function HomePage() {
+const TrendingPage = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const isInitialLoad = useRef(true);
 
   const fetchDataPosts = async () => {
-    fetchDataService(page, null, hasMore, setPosts, setPage, setHasMore);
+    fetchDataService(page, "trend", hasMore, setPosts, setPage, setHasMore);
   };
 
   useEffect(() => {
@@ -47,6 +47,6 @@ function HomePage() {
       </InfiniteScroll>
     </MainLayout>
   );
-}
+};
 
-export default HomePage;
+export default TrendingPage;

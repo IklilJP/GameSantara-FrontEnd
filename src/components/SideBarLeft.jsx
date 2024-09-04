@@ -36,14 +36,16 @@ function SideBarLeft() {
             className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname == "/" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <AiOutlineHome size={20} /> Home
           </Link>
-          <span
+          <Link
+            to={"/trending"}
             className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname == "/trending" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <IoTrendingUp size={20} /> Trending
-          </span>
-          <span
+          </Link>
+          <Link
+            to={"/terbaru"}
             className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname == "/terbaru" ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             <HiOutlineClock size={20} /> Terbaru
-          </span>
+          </Link>
           <Link
             to={`/user/${user?.id}`}
             className={`flex items-center gap-3 text-lg px-4 leading-5 py-3 transition ${location.pathname.startsWith("/user") ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>

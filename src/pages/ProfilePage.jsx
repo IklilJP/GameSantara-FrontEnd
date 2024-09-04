@@ -110,10 +110,10 @@ function ProfilePage() {
             </Link>
           </div>
           <div className="mt-8">
-            <CardThread />
-            <CardThread />
-            <CardThread />
-            <CardThread />
+            {/* <CardThread /> */}
+            {/* <CardThread /> */}
+            {/* <CardThread /> */}
+            {/* <CardThread /> */}
           </div>
         </div>
       </div>

@@ -9,28 +9,65 @@ import {
 } from "react-icons/pi";
 import { id } from "date-fns/locale";
 import { formatDistanceToNowStrict } from "date-fns";
+import axiosInstance from "../api/axiosInstance";
 
-function CardThread({ posts }) {
-  const [modalShare, setModalShare] = useState(false);
-  const [isClamped, setIsClamped] = useState(false);
-  const [copyUrl, setCopyUrl] = useState("");
+function CardThread({ posts, setPosts }) {
+  const [modalShare, setModalShare] = useState(null);
   const bodyRef = useRef(null);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(copyUrl);
+  const handleCopy = (url) => {
+    navigator.clipboard.writeText(url);
   };
 
-  useEffect(() => {
-    const element = bodyRef.current;
-    if (element) {
-      const originalHeight = element.scrollHeight;
-      console.log(originalHeight);
-      const clampedHeight = element.clientHeight;
-      console.log(clampedHeight);
+  const handleModalShare = (postId) => {
+    setModalShare((prev) => (prev === postId ? null : postId));
+  };
 
-      setIsClamped(clampedHeight < originalHeight);
+  const handleUpvote = async (postId) => {
+    try {
+      const response = await axiosInstance.post(
+        `/vote-posts/${postId}/up-vote`,
+      );
+      if (response.status === 200) {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId
+              ? {
+                  ...post,
+                  upVotesCount: post.upVotesCount + 1,
+                  isUpVoted: true,
+                }
+              : post,
+          ),
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }, [posts]);
+  };
+
+  const handleDownvote = async (postId) => {
+    try {
+      const response = await axiosInstance.post(
+        `/vote-posts/${postId}/down-vote`,
+      );
+      if (response.status === 200) {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId
+              ? {
+                  ...post,
+                  downVotesCount: post.downVotesCount + 1,
+                  isDownVoted: true,
+                }
+              : post,
+          ),
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -41,7 +78,7 @@ function CardThread({ posts }) {
               <img
                 src={
                   item.profilePictureUrl ||
-                  `https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg `
+                  `https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg`
                 }
                 className="rounded-full"
                 alt="User"
@@ -71,11 +108,6 @@ function CardThread({ posts }) {
               <p ref={bodyRef} className="line-clamp-3 whitespace-pre-line">
                 {item.body}
               </p>
-              {isClamped && (
-                <span className="absolute bottom-0 right-0 text-blue-700 bg-gradient-to-r from-transparent from-5% to-softBlack to-20% w-52 text-right">
-                  Lihat selengkapnya...
-                </span>
-              )}
             </div>
             <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
               {item.pictures?.map((image, index) => (
@@ -95,15 +127,23 @@ function CardThread({ posts }) {
           </div>
           <div className="flex gap-3 mt-2">
             <div className="flex bg-[#30353B] px-4 py-1 w-32 rounded-3xl justify-around gap-1">
-              <div className="flex items-center gap-2 ">
+              <button
+                className={`flex items-center gap-2 ${
+                  item.isUpVoted ? "text-red-600" : ""
+                }`}
+                onClick={() => handleUpvote(item.id)}>
                 <PiArrowFatUpBold />
                 <span>{item.upVotesCount}</span>
-              </div>
+              </button>
               <span className="bg-gray-600 w-[1px]"></span>
-              <div className="flex items-center gap-2">
+              <button
+                className={`flex items-center gap-2 ${
+                  item.isDownVoted ? "text-blue-600" : ""
+                }`}
+                onClick={() => handleDownvote(item.id)}>
                 <PiArrowFatDownBold />
                 <span>{item.downVotesCount}</span>
-              </div>
+              </button>
             </div>
             <button className="flex bg-[#30353B] px-4 py-1 max-w-32 rounded-3xl justify-around gap-1">
               <div className="flex items-center gap-2">
@@ -112,25 +152,29 @@ function CardThread({ posts }) {
               </div>
             </button>
             <AnimatePresence>
-              <button
-                className="flex bg-[#30353B] px-4 py-1 max-w-32 rounded-3xl justify-around gap-1 relative group"
-                onClick={() => setModalShare(!modalShare)}>
-                <div className="flex items-center gap-2 w-full h-full">
-                  <PiShareFat className="group-hover:text-red-600 transition" />
-                </div>
-                {modalShare && (
+              <div className="flex bg-[#30353B] rounded-3xl justify-around gap-1 relative group">
+                <button
+                  className="px-4 py-1 max-w-32"
+                  onClick={() => handleModalShare(item.id)}>
+                  <div className="flex items-center gap-2 w-full h-full">
+                    <PiShareFat className="group-hover:text-red-600 transition" />
+                  </div>
+                </button>
+                {modalShare === item.id && (
                   <motion.button
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    onClick={handleCopy}
+                    onClick={() =>
+                      handleCopy(`https://example.com/posts/${item.id}`)
+                    }
                     className="w-36 max-w-40 bg-black absolute top-12 border border-colorBorder rounded-lg">
-                    <button className="flex items-center gap-3 py-2 px-3 hover:bg-gray-700 transition">
+                    <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-700 transition">
                       <HiLink /> Salin Link
-                    </button>
+                    </div>
                   </motion.button>
                 )}
-              </button>
+              </div>
             </AnimatePresence>
           </div>
         </div>

@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import { fetchDetailUser } from "./store/authSlice";
 import SettingProfilePage from "./pages/SettingProfilePage";
 import CreateThreadPage from "./pages/CreateThreadPage";
+import TrendingPage from "./pages/TrendingPage";
+import LatestPage from "./pages/LatestPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,6 +26,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/trending" element={<TrendingPage />} />
+        <Route path="/terbaru" element={<LatestPage />} />
         <Route path="/user/:userId" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingProfilePage />} />
         <Route path="/create/thread" element={<CreateThreadPage />} />

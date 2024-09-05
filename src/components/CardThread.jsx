@@ -44,7 +44,7 @@ function CardThread({ posts, setPosts }) {
         <Link
           to={`/thread/${item.id}`}
           key={item.id}
-          className="my-3 bg-softBlack p-4 rounded-md block">
+          className="my-3 bg-softBlack p-4 rounded-md block hover:bg-[#2D3239] transition">
           <div className="flex items-center gap-x-3">
             <div className="w-8 rounded-full">
               <img
@@ -100,9 +100,9 @@ function CardThread({ posts, setPosts }) {
             </div>
           </div>
           <div className="flex mt-2 gap-4">
-            <div className="flex justify-around">
+            <div className="flex justify-around drop-shadow-md">
               <button
-                className={`flex bg-[#30353B] items-center gap-2 px-4 py-1 rounded-l-2xl hover:bg-black transition ${
+                className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-l-2xl hover:bg-black transition ${
                   item.isUpVoted ? "text-red-600" : ""
                 }`}
                 onClick={(event) =>
@@ -121,7 +121,7 @@ function CardThread({ posts, setPosts }) {
               </button>
               <span className="bg-gray-600 w-[1px]"></span>
               <button
-                className={`flex bg-[#30353B] items-center gap-2 px-4 py-1 rounded-r-2xl hover:bg-black transition ${
+                className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-r-2xl hover:bg-black transition ${
                   item.isDownVoted ? "text-blue-600" : ""
                 }`}
                 onClick={(event) =>
@@ -143,14 +143,14 @@ function CardThread({ posts, setPosts }) {
                 <span className="font-bold">{item.downVotesCount}</span>
               </button>
             </div>
-            <button className="flex bg-[#30353B] px-4 py-1 max-w-32 rounded-3xl justify-around gap-1">
+            <button className="flex bg-[#30353B] px-3 py-1 max-w-32 rounded-3xl justify-around gap-1 drop-shadow-md">
               <div className="flex items-center gap-2">
                 <FaRegMessage />
                 <span className="font-bold">{item.commentsCount}</span>
               </div>
             </button>
             <AnimatePresence>
-              <div className="flex bg-[#30353B] rounded-3xl justify-around gap-1 relative group">
+              <div className="flex bg-[#30353B] rounded-3xl justify-around gap-1 relative group drop-shadow-md">
                 <button
                   className="px-4 py-1 max-w-32"
                   onClick={() => handleModalShare(item.id)}>

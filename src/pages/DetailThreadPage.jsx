@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import MainLayout from "../components/MainLayout";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchThreadDetailService } from "../api/apiServices";
 import { formatDistanceToNowStrict } from "date-fns";
 import { id } from "date-fns/locale";
@@ -18,6 +18,8 @@ import { useSelector } from "react-redux";
 import { handleDownvoteDetail, handleUpvoteDetail } from "../api/voteService";
 import Linkify from "linkify-react";
 import Alert from "../components/Alert";
+import { getComment, sendComment } from "../api/commentService";
+import Comment from "../components/Comment";
 
 const DetailThreadPage = () => {
   const { postId } = useParams();
@@ -25,6 +27,10 @@ const DetailThreadPage = () => {
   const [modalShare, setModalShare] = useState(null);
   const userLogin = useSelector((state) => state.auth.userDetail);
   const [isError, setIsError] = useState(null);
+  const [isComment, setIsComment] = useState(false);
+  const textareaRef = useRef(null);
+  const [contentComment, setContentComment] = useState("");
+  const [comments, setComments] = useState([]);
 
   const handleModalShare = (postId) => {
     setModalShare((prev) => (prev === postId ? null : postId));
@@ -34,6 +40,15 @@ const DetailThreadPage = () => {
     fetchThreadDetailService(postId, setThreadDetail);
   };
 
+  const handleSendComment = () => {
+    if (!contentComment.trim()) {
+      setIsError("Comment cannot be empty");
+      return;
+    }
+    sendComment(threadDetail.id, contentComment, null, setComments, userLogin);
+    setContentComment("");
+  };
+
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setIsError(null);
@@ -41,6 +56,12 @@ const DetailThreadPage = () => {
 
     return () => clearTimeout(timeOut);
   }, [isError]);
+
+  useEffect(() => {
+    if (isComment) {
+      textareaRef.current?.focus();
+    }
+  }, [isComment]);
 
   useEffect(() => {
     fetchDataDetail();
@@ -115,10 +136,10 @@ const DetailThreadPage = () => {
             ))}
           </div>
 
-          <div className="flex mt-10 gap-4 ">
-            <div className="flex justify-around">
+          <div className="flex mt-8 gap-4">
+            <div className="flex justify-around drop-shadow-md">
               <button
-                className={`flex bg-[#30353B] items-center gap-2 px-4 py-1 rounded-l-2xl hover:bg-black transition ${
+                className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-l-2xl hover:bg-black transition ${
                   threadDetail.isUpVoted ? "text-red-600" : ""
                 }`}
                 onClick={(event) =>
@@ -141,7 +162,7 @@ const DetailThreadPage = () => {
               </button>
               <span className="bg-gray-600 w-[1px]"></span>
               <button
-                className={`flex bg-[#30353B] items-center gap-2 px-4 py-1 rounded-r-2xl hover:bg-black transition ${
+                className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-r-2xl hover:bg-black transition ${
                   threadDetail.isDownVoted ? "text-blue-600" : ""
                 }`}
                 onClick={(event) =>
@@ -163,14 +184,14 @@ const DetailThreadPage = () => {
                 <span className="font-bold">{threadDetail.downVotesCount}</span>
               </button>
             </div>
-            <button className="flex bg-[#30353B] px-4 py-1 max-w-32 rounded-3xl justify-around gap-1">
+            <button className="flex bg-[#30353B] px-3 py-1 max-w-32 rounded-3xl justify-around gap-1 drop-shadow-md">
               <div className="flex items-center gap-2">
                 <FaRegMessage />
                 <span className="font-bold">{threadDetail.commentsCount}</span>
               </div>
             </button>
             <AnimatePresence>
-              <div className="flex bg-[#30353B] rounded-3xl justify-around gap-1 relative group">
+              <div className="flex bg-[#30353B] rounded-3xl justify-around gap-1 relative group drop-shadow-md">
                 <button
                   className="px-4 py-1 max-w-32"
                   onClick={() => handleModalShare(threadDetail.id)}>
@@ -195,6 +216,45 @@ const DetailThreadPage = () => {
               </div>
             </AnimatePresence>
           </div>
+        </div>
+        <div className="my-3">
+          {isComment ? (
+            <div className="w-full bg-black top-0 p-3 rounded-lg border border-colorBorder">
+              <textarea
+                ref={textareaRef}
+                value={contentComment}
+                onChange={(e) => setContentComment(e.target.value)}
+                className="w-full p-2 rounded-lg bg-transparent focus:outline-none"></textarea>
+              <div className="flex justify-end gap-2 mt-2">
+                <button
+                  className="bg-red-600 text-white px-3 py-1 rounded-lg"
+                  onClick={() => setIsComment(false)}>
+                  Cancel
+                </button>
+                <button
+                  className="bg-blue-700 text-white px-3 py-1 rounded-lg"
+                  onClick={() => {
+                    handleSendComment();
+                    setIsComment(false);
+                  }}>
+                  Send
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              className="w-full text-left border border-colorBorder py-2 px-4 rounded-2xl"
+              onClick={() => setIsComment(true)}>
+              <span>Kirim komentarmu....</span>
+            </button>
+          )}
+        </div>
+        <div className="flex flex-col gap-4">
+          <Comment
+            postId={threadDetail.id}
+            comments={comments}
+            setComments={setComments}
+          />
         </div>
       </div>
       <AnimatePresence>

@@ -87,7 +87,7 @@ export default function CreateThreadPage() {
         if (response.data.status === 201) {
           setIsSuccess("Berhasil buat thread");
         }
-        navigate("/");
+        navigate("/", { state: { newThread: response.data.data } });
       })
       .catch((error) => {
         if (error.response.status === 413) {
@@ -191,6 +191,9 @@ export default function CreateThreadPage() {
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       SVG, PNG, JPG or GIF, JPEG
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Max 2Mb
                     </p>
                   </div>
                   <input

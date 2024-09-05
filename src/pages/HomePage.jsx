@@ -4,12 +4,14 @@ import MainLayout from "../components/MainLayout";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchDataService } from "../api/apiServices";
 import { MdScubaDiving } from "react-icons/md";
+import { useLocation } from "react-router-dom";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const isInitialLoad = useRef(true);
+  const location = useLocation();
 
   const fetchDataPosts = () => {
     fetchDataService(page, null, hasMore, setPosts, setPage, setHasMore);

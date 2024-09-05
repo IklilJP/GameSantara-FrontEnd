@@ -96,6 +96,9 @@ function UpdateProfilePicture({ setIsError, setIsSuccess }) {
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     SVG, PNG, JPG or GIF, JPEG
                   </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Max 2Mb
+                  </p>
                 </>
               )}
             </div>

@@ -53,20 +53,24 @@ function CardThread({ posts, setPosts }) {
           key={item.id}
           className="my-3 bg-softBlack p-4 rounded-md block hover:bg-[#2D3239] transition">
           <div className="flex items-center gap-x-3">
-            <div className="w-8 rounded-full">
-              <img
-                src={
-                  item.profilePictureUrl ||
-                  `https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg`
-                }
-                className="rounded-full"
-                alt="User"
-              />
-            </div>
+            <Link to={`/user/${item.userId}`}>
+              <div className="w-8 rounded-full">
+                <img
+                  src={
+                    item.profilePictureUrl ||
+                    `https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg`
+                  }
+                  className="rounded-full"
+                  alt="User"
+                />
+              </div>
+            </Link>
             <div className="flex justify-center">
               <div className="flex flex-col gap-x-3">
                 <div className="flex gap-2">
-                  <p className="text-sm font-bold">{item.user}</p>
+                  <Link to={`/user/${item.userId}`}>
+                    <p className="text-sm font-bold">{item.user}</p>
+                  </Link>
                   &bull;
                   <span className="text-sm font-bold text-red-600">
                     {item.tagName}
@@ -110,7 +114,7 @@ function CardThread({ posts, setPosts }) {
             <div className="flex justify-around drop-shadow-md">
               <button
                 className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-l-2xl hover:bg-[#2a2f36] transition ${
-                  item.isUpVoted ? "text-red-600" : ""
+                  item.isUpVoted ? "text-green-600" : ""
                 }`}
                 onClick={(event) =>
                   handleUpvote(
@@ -129,7 +133,7 @@ function CardThread({ posts, setPosts }) {
               <span className="bg-gray-600 w-[1px]"></span>
               <button
                 className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-r-2xl hover:bg-[#2a2f36] transition ${
-                  item.isDownVoted ? "text-blue-600" : ""
+                  item.isDownVoted ? "text-red-600" : ""
                 }`}
                 onClick={(event) =>
                   handleDownvote(

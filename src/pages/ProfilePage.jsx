@@ -27,7 +27,9 @@ function ProfilePage() {
     if (userId === userLogin?.id) {
       setUserDetail(userLogin);
     } else {
-      axiosInstance.get(`/user/${userId}`).then((res) => console.log(res.data));
+      axiosInstance
+        .get(`/user/${userId}`)
+        .then((res) => setUserDetail(res.data.data));
     }
   }, [userDetail, userLogin]);
 
@@ -64,10 +66,10 @@ function ProfilePage() {
             </div>
 
             <div className="flex flex-col mt-3">
-              <span className="font-bold text-2xl capitalize text-gray-200">
+              <span className="font-bold text-xl capitalize text-gray-200">
                 {userDetail?.fullName}
               </span>
-              <span className="text-lg">@{userDetail?.username}</span>
+              <span className="">@{userDetail?.username}</span>
 
               <div className="flex gap-2">
                 <div className="flex gap-2">
@@ -86,11 +88,11 @@ function ProfilePage() {
           <div className="h-10 flex justify-end items-center gap-3">
             <div>
               <PiShareFat
-                size={25}
+                size={20}
                 className="group-hover:text-red-600 transition"
               />
             </div>
-            <div className="relative">
+            <div className="relative w-10 right-0">
               <MeatballMenu IsMenuActive={isMenu} setIsMenuActive={setIsMenu} />
               <AnimatePresence>
                 {isMenu && (
@@ -98,11 +100,11 @@ function ProfilePage() {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    className="absolute w-36 right-11 ">
+                    className="absolute w-32 right-5">
                     <Link
-                      className="flex gap-2 bg-softBlack hover:bg-gray-600 py-2 px-3 border border-colorBorder rounded-lg transition"
+                      className="flex items-center gap-2 bg-softBlack hover:bg-gray-600 py-1 px-2 border border-colorBorder rounded-lg transition text-sm"
                       to={"/settings"}>
-                      <LiaEdit size={20} />
+                      <LiaEdit size={15} />
                       Edit Profile
                     </Link>
                   </motion.div>

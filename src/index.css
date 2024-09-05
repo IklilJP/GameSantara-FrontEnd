@@ -47,8 +47,8 @@
   position: relative;
   display: block;
   border: none;
-  width: 5rem;
-  height: 5rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   background: none;
   /* background-color: red; */
@@ -65,15 +65,15 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 0.7rem;
-  height: 0.7rem;
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 50%;
   background: white;
   transition: width 0.3s ease 0s, height 0.3s ease 0s, transform 0.3s ease 0.3s;
 }
 
 .meatball .dot:nth-of-type(1) {
-  transform: translate(calc(-50% - 1.2rem), -50%) rotate(45deg);
+  transform: translate(calc(-50% - 1rem), -50%) rotate(45deg);
 }
 
 .meatball .dot:nth-of-type(2) {
@@ -82,7 +82,7 @@
 }
 
 .meatball .dot:nth-of-type(3) {
-  transform: translate(calc(-50% + 1.2rem), -50%) rotate(-45deg);
+  transform: translate(calc(-50% + 1rem), -50%) rotate(-45deg);
 }
 
 .meatball:hover .dot:nth-of-type(1) {
@@ -106,8 +106,8 @@
 }
 
 .meatball.active .dot:nth-of-type(1) {
-  width: 3rem;
-  height: 0.4rem;
+  width: 2rem;
+  height: 0.3rem;
   border-radius: 1rem;
   transform: translate(-50%, -50%) rotate(45deg);
 }
@@ -118,8 +118,8 @@
 }
 
 .meatball.active .dot:nth-of-type(3) {
-  width: 3rem;
-  height: 0.4rem;
+  width: 2rem;
+  height: 0.3rem;
   border-radius: 1rem;
   transform: translate(-50%, -50%) rotate(-45deg);
 }

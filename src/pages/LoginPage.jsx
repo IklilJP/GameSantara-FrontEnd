@@ -34,6 +34,7 @@ function LoginPage() {
       console.log("User login berhasil:", resultAction);
       navigate("/");
     } catch (err) {
+      console.log(err);
       if (err === "Bad credentials") {
         setErrorCredential("Email atau kata sandi salah");
       } else {

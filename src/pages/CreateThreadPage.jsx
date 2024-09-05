@@ -87,7 +87,8 @@ export default function CreateThreadPage() {
         if (response.data.status === 201) {
           setIsSuccess("Berhasil buat thread");
         }
-        navigate("/", { state: { newThread: response.data.data } });
+        sessionStorage.setItem("newThread", JSON.stringify(response.data.data));
+        navigate("/");
       })
       .catch((error) => {
         if (error.response.status === 413) {

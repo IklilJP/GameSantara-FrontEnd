@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 function SideBarLeft() {
   const [tagsItems, setTagItems] = useState([]);
   const location = useLocation();
-  const user = useSelector((state) => state.auth.userDetail);
+  const userLogin = useSelector((state) => state.auth.userDetail);
 
   const fetchTags = async () => {
     try {
@@ -47,9 +47,25 @@ function SideBarLeft() {
             <HiOutlineClock size={20} /> Terbaru
           </Link>
           <Link
-            to={`/user/${user?.id}`}
+            to={`/user/${userLogin?.id}`}
             className={`flex items-center gap-3 text-md px-4 leading-5 py-3 transition ${location.pathname.startsWith("/user") ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
-            <FaUserCircle size={20} /> Profile
+            {userLogin ? (
+              <div className="w-6">
+                <img
+                  src={userLogin.profilePicture.image}
+                  alt=""
+                  className="rounded-full"
+                />
+              </div>
+            ) : (
+              <div>
+                <FaUserCircle
+                  size={25}
+                  className="group-hover:text-red-600 transition"
+                />
+              </div>
+            )}
+            Profile
           </Link>
         </div>
         <div className="border-t border-t-colorBorder">

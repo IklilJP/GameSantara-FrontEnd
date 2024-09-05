@@ -86,14 +86,26 @@ function Navbar() {
           </span>
         </button>
         <AnimatePresence>
-          <div className="relative">
+          <div className="relative flex justify-center">
             <button
               onClick={() => setNavModal(!navModal)}
-              className="p-2 transition group">
-              <FaUserCircle
-                size={25}
-                className="group-hover:text-red-600 transition"
-              />
+              className="transition group">
+              {userLogin ? (
+                <div className="w-8 ml-2">
+                  <img
+                    src={userLogin.profilePicture.image}
+                    alt=""
+                    className="rounded-full"
+                  />
+                </div>
+              ) : (
+                <div className="w-8 ml-2">
+                  <FaUserCircle
+                    size={25}
+                    className="group-hover:text-red-600 transition"
+                  />
+                </div>
+              )}
             </button>
             {navModal &&
               (userLogin ? (

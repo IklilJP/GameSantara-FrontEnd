@@ -4,21 +4,26 @@ import MainLayout from "../components/MainLayout";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchDataService } from "../api/apiServices";
 import { MdScubaDiving } from "react-icons/md";
-import { useLocation } from "react-router-dom";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const isInitialLoad = useRef(true);
-  const location = useLocation();
 
-  const fetchDataPosts = () => {
+  const fetchDataPosts = async () => {
     fetchDataService(page, null, hasMore, setPosts, setPage, setHasMore);
   };
 
   useEffect(() => {
-    if (isInitialLoad.current) {
+    const newThread = sessionStorage.getItem("newThread");
+    if (newThread) {
+      const newPost = JSON.parse(newThread);
+      setPosts((prevPosts) => {
+        return [newPost, ...prevPosts.filter((post) => post.id !== newPost.id)];
+      });
+      sessionStorage.removeItem("newThread");
+    } else if (!newThread && isInitialLoad.current) {
       isInitialLoad.current = false;
       fetchDataPosts();
     }

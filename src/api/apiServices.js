@@ -16,7 +16,14 @@ export const fetchDataService = async (
     );
     const newPosts = response.data.data;
 
-    setPosts((prev) => [...prev, ...newPosts]);
+    setPosts((prevPosts) => {
+      const uniqueNewPosts = newPosts.filter(
+        // Filter out posts that already exist in the current state
+        (newPost) =>
+          !prevPosts.some((existingPost) => existingPost.id === newPost.id),
+      );
+      return [...prevPosts, ...uniqueNewPosts];
+    });
     setPage((prevIndex) => prevIndex + 1);
     setHasMore(response.data.paging.hasNext);
   } catch (error) {

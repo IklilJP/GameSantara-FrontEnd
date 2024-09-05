@@ -14,7 +14,7 @@ function LoginPage() {
     resolver: yupResolver(validationSchemaLogin),
   });
 
-  const [isRememberMe, setIsRememberMe] = useState(false);
+  const [isRememberMe, setIsRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [errorCredential, setErrorCredential] = useState(null);
   const dispatch = useDispatch();

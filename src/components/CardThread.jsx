@@ -13,7 +13,7 @@ import { id } from "date-fns/locale";
 import { formatDistanceToNowStrict } from "date-fns";
 import { useSelector } from "react-redux";
 import Alert from "./Alert";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { handleDownvote, handleUpvote } from "../api/voteService";
 
 function CardThread({ posts, setPosts }) {
@@ -21,6 +21,7 @@ function CardThread({ posts, setPosts }) {
   const bodyRef = useRef(null);
   const userLogin = useSelector((state) => state.auth.userDetail);
   const [isError, setIsError] = useState(null);
+  const navigate = useNavigate();
 
   const handleCopy = (url) => {
     navigator.clipboard.writeText(url);
@@ -28,6 +29,12 @@ function CardThread({ posts, setPosts }) {
 
   const handleModalShare = (postId) => {
     setModalShare((prev) => (prev === postId ? null : postId));
+  };
+
+  const handleComment = (event, postId) => {
+    event.preventDefault();
+    event.stopPropagation();
+    navigate(`/thread/${postId}`);
   };
 
   useEffect(() => {
@@ -102,7 +109,7 @@ function CardThread({ posts, setPosts }) {
           <div className="flex mt-2 gap-4">
             <div className="flex justify-around drop-shadow-md">
               <button
-                className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-l-2xl hover:bg-black transition ${
+                className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-l-2xl hover:bg-[#2a2f36] transition ${
                   item.isUpVoted ? "text-red-600" : ""
                 }`}
                 onClick={(event) =>
@@ -121,7 +128,7 @@ function CardThread({ posts, setPosts }) {
               </button>
               <span className="bg-gray-600 w-[1px]"></span>
               <button
-                className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-r-2xl hover:bg-black transition ${
+                className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-r-2xl hover:bg-[#2a2f36] transition ${
                   item.isDownVoted ? "text-blue-600" : ""
                 }`}
                 onClick={(event) =>
@@ -143,7 +150,9 @@ function CardThread({ posts, setPosts }) {
                 <span className="font-bold">{item.downVotesCount}</span>
               </button>
             </div>
-            <button className="flex bg-[#30353B] px-3 py-1 max-w-32 rounded-3xl justify-around gap-1 drop-shadow-md">
+            <button
+              className="flex bg-[#30353B] px-3 py-1 max-w-32 rounded-3xl justify-around gap-1 drop-shadow-md hover:bg-[#2A2F36] transition"
+              onClick={(event) => handleComment(event, item.id)}>
               <div className="flex items-center gap-2">
                 <FaRegMessage />
                 <span className="font-bold">{item.commentsCount}</span>

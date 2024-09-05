@@ -76,12 +76,12 @@ function Navbar() {
       <nav className="flex w-4/12 justify-end">
         <button
           onClick={handleCreateThread}
-          className="p-2 transition group flex justify-center items-center gap-1 bg-softBlack rounded-3xl hover:bg-gray-700">
+          className="px-2 transition group flex justify-center items-center bg-softBlack rounded-3xl hover:bg-gray-700">
           <FiPlus
             size={20}
             className="group-hover:text-red-600 transition font-bold"
           />
-          <span className="font-bold group-hover:text-red-600 transition px-2">
+          <span className="font-bold group-hover:text-red-600 transition pl-1">
             Thread
           </span>
         </button>

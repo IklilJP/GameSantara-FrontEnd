@@ -140,7 +140,7 @@ const DetailThreadPage = () => {
             <div className="flex justify-around drop-shadow-md">
               <button
                 className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-l-2xl hover:bg-black transition ${
-                  threadDetail.isUpVoted ? "text-red-600" : ""
+                  threadDetail.isUpVoted ? "text-green-600" : ""
                 }`}
                 onClick={(event) =>
                   handleUpvoteDetail(
@@ -163,7 +163,7 @@ const DetailThreadPage = () => {
               <span className="bg-gray-600 w-[1px]"></span>
               <button
                 className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-r-2xl hover:bg-black transition ${
-                  threadDetail.isDownVoted ? "text-blue-600" : ""
+                  threadDetail.isDownVoted ? "text-red-600" : ""
                 }`}
                 onClick={(event) =>
                   handleDownvoteDetail(

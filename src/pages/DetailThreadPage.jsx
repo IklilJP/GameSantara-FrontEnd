@@ -72,7 +72,7 @@ const DetailThreadPage = () => {
 
   useEffect(() => {
     fetchDataDetail();
-  }, []);
+  }, [postId]);
 
   const openLightboxOnSlide = (index) => {
     setLightboxController({

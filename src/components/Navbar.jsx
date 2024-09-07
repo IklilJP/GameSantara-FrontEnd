@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { FaUser, FaUserCircle } from "react-icons/fa";
-import { IoAddSharp, IoSearchOutline } from "react-icons/io5";
+import { IoSearchOutline } from "react-icons/io5";
 import { MdLogout, MdOutlineLogin } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,23 +9,30 @@ import { logout } from "../store/authSlice";
 import { RiEditBoxLine } from "react-icons/ri";
 import { FiPlus } from "react-icons/fi";
 import Alert from "./Alert";
+import axiosInstance from "../api/axiosInstance"; // Assuming you have axios configured
 
 function Navbar() {
   const [navModal, setNavModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const userLogin = useSelector((state) => state.auth.userDetail);
   const [isError, setIsError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const handleResultClick = (threadId) => {
+    navigate(`/thread/${threadId}`);
+  };
+
   const handleLogout = async () => {
     setIsLoading(true);
     try {
       const resultAction = await dispatch(logout()).unwrap();
-      console.log("User berhasil logout :", resultAction);
       navigate("/login");
     } catch (err) {
-      isError(err);
+      setIsError(err);
     } finally {
       setIsLoading(false);
     }
@@ -48,6 +55,31 @@ function Navbar() {
     return () => clearTimeout(timeOut);
   }, [isError]);
 
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery.trim()) {
+        handleSearch();
+      } else {
+        setSearchResults([]);
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
+  const handleSearch = async () => {
+    try {
+      setIsSearching(true);
+      const response = await axiosInstance.get(`/post?q=${searchQuery}`);
+      console.log(response.data.data);
+      setSearchResults(response.data.data);
+      setIsSearching(false);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+      setIsSearching(false);
+    }
+  };
+
   return (
     <header className="fixed z-50 w-full flex justify-around items-center px-96 py-1 border-b border-b-colorBorder shadow-lg bg-black">
       <div className="w-4/12 ">
@@ -61,16 +93,41 @@ function Navbar() {
         </div>
       </div>
 
-      <div className="transition group flex items-center gap-2 border border-colorBorder rounded-full px-4 bg-softBlack w-5/12">
+      {/* Search Bar */}
+      <div className="relative transition group flex items-center gap-2 border border-colorBorder rounded-full px-4 bg-softBlack w-5/12">
         <IoSearchOutline
           size={20}
           className="group-hover:text-red-600 transition"
         />
         <input
           type="text"
-          placeholder="Type here"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Tulis judul atau deskripsi"
           className="w-full max-w-xs bg-softBlack px-2 py-1 focus-visible:outline-none"
         />
+        {searchResults.length > 0 && (
+          <div className="absolute top-full right-0 mt-2 w-full bg-black border border-colorBorder rounded-lg shadow-lg z-10">
+            <ul className="">
+              {searchResults.map((result) => (
+                <li key={result.id}>
+                  <Link
+                    onClick={() => setSearchResults("")}
+                    to={`/thread/${result.id}`}
+                    className="block px-4 py-2 hover:bg-gray-700 text-white border border-colorBorder">
+                    <h3 className="font-bold text-sm">{result.title}</h3>
+                    <p className="line-clamp-1 text-sm">{result.body}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {isSearching && (
+          <div className="absolute right-5">
+            <span className="loading loading-spinner loading-sm text-red-600"></span>
+          </div>
+        )}
       </div>
 
       <nav className="flex w-4/12 justify-end">
@@ -125,7 +182,7 @@ function Navbar() {
                     <button
                       type="button"
                       className="flex items-center gap-4 px-4 py-2 hover:bg-gray-700 transition"
-                      onClick={() => handleLogout()}>
+                      onClick={handleLogout}>
                       <MdLogout /> Keluar
                     </button>
                   </li>
@@ -156,6 +213,7 @@ function Navbar() {
           </div>
         </AnimatePresence>
       </nav>
+
       {isLoading && (
         <div className="absolute w-full h-screen backdrop-blur-sm bg-white/10 left-0 top-0 flex justify-center items-center">
           <span className="loading loading-dots loading-lg text-red-600"></span>

@@ -19,7 +19,7 @@ const Comment = ({ postId, comments = [], setComments }) => {
   const userLogin = useSelector((state) => state.auth.userDetail);
   const [isComment, setIsComment] = useState({});
   const [contentComment, setContentComment] = useState("");
-  const [openComment, setOpenComment] = useState({}); // Changed to object to manage multiple comment open states
+  const [openComment, setOpenComment] = useState({});
 
   useEffect(() => {
     getComment(postId, setComments);
@@ -68,14 +68,14 @@ const Comment = ({ postId, comments = [], setComments }) => {
         className={`mt-2 ml-4 border-l ${comment.childCommentsCount ? "border-gray-700" : "border-none"} rounded-l-xl`}>
         {/* Comment */}
         <div className="flex items-center gap-3">
-          <div className="w-8">
+          <div className="w-7 h-7">
             <img
               src={
                 comment.profileImageUrl ||
                 "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
               }
               alt={comment.username}
-              className="rounded-full"
+              className="rounded-full w-7 h-7"
             />
           </div>
           <div className="flex gap-2 items-center">
@@ -134,11 +134,11 @@ const Comment = ({ postId, comments = [], setComments }) => {
         </div>
 
         {isComment[comment.id] && (
-          <div className="w-10/12 mx-auto bg-gray-800 p-2 rounded-lg border border-gray-600">
+          <div className="w-10/12 mx-auto p-2 rounded-lg border border-gray-600">
             <textarea
               value={contentComment}
               onChange={(e) => setContentComment(e.target.value)}
-              className="w-full p-2 rounded-lg bg-transparent focus:outline-none border border-gray-500 text-gray-300"></textarea>
+              className="w-full p-2 rounded-lg bg-transparent focus:outline-none text-gray-300"></textarea>
             <div className="flex justify-end gap-2 mt-2">
               <button
                 className="bg-red-600 text-white px-3 py-1 rounded-lg"
@@ -160,6 +160,7 @@ const Comment = ({ postId, comments = [], setComments }) => {
                     setComments,
                     userLogin,
                   );
+                  setContentComment("");
                   setIsComment((prevState) => ({
                     ...prevState,
                     [comment.id]: false,

@@ -18,8 +18,9 @@ import { useSelector } from "react-redux";
 import { handleDownvoteDetail, handleUpvoteDetail } from "../api/voteService";
 import Linkify from "linkify-react";
 import Alert from "../components/Alert";
-import { getComment, sendComment } from "../api/commentService";
+import { sendComment } from "../api/commentService";
 import Comment from "../components/Comment";
+import FsLightbox from "fslightbox-react";
 
 const DetailThreadPage = () => {
   const { postId } = useParams();
@@ -31,8 +32,14 @@ const DetailThreadPage = () => {
   const textareaRef = useRef(null);
   const [contentComment, setContentComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [lightboxController, setLightboxController] = useState({
+    toggler: false,
+    slide: 1,
+  });
 
-  const handleModalShare = (postId) => {
+  const handleModalShare = (event, postId) => {
+    event.preventDefault();
+    event.stopPropagation();
     setModalShare((prev) => (prev === postId ? null : postId));
   };
 
@@ -66,6 +73,13 @@ const DetailThreadPage = () => {
   useEffect(() => {
     fetchDataDetail();
   }, []);
+
+  const openLightboxOnSlide = (index) => {
+    setLightboxController({
+      toggler: !lightboxController.toggler,
+      slide: index + 1,
+    });
+  };
 
   if (!threadDetail.user) {
     return (
@@ -130,7 +144,8 @@ const DetailThreadPage = () => {
                 <img
                   src={image.imageUrl}
                   alt={`Gambar ${index + 1}`}
-                  className="object-cover w-full h-full rounded-md"
+                  className="object-contain w-full max-h-96 rounded-md"
+                  onClick={() => openLightboxOnSlide(index)}
                 />
               </div>
             ))}
@@ -184,7 +199,9 @@ const DetailThreadPage = () => {
                 <span className="font-bold">{threadDetail.downVotesCount}</span>
               </button>
             </div>
-            <button className="flex bg-[#30353B] px-3 py-1 max-w-32 rounded-3xl justify-around gap-1 drop-shadow-md">
+            <button
+              className="flex bg-[#30353B] px-3 py-1 max-w-32 rounded-3xl justify-around gap-1 drop-shadow-md hover:bg-black transition"
+              onClick={() => setIsComment(!isComment)}>
               <div className="flex items-center gap-2">
                 <FaRegMessage />
                 <span className="font-bold">{threadDetail.commentsCount}</span>
@@ -194,7 +211,7 @@ const DetailThreadPage = () => {
               <div className="flex bg-[#30353B] rounded-3xl justify-around gap-1 relative group drop-shadow-md">
                 <button
                   className="px-4 py-1 max-w-32"
-                  onClick={() => handleModalShare(threadDetail.id)}>
+                  onClick={(e) => handleModalShare(e, threadDetail.id)}>
                   <div className="flex items-center gap-2 w-full h-full">
                     <PiShareFat className="group-hover:text-red-600 transition" />
                   </div>
@@ -256,6 +273,12 @@ const DetailThreadPage = () => {
             setComments={setComments}
           />
         </div>
+
+        <FsLightbox
+          toggler={lightboxController.toggler}
+          sources={threadDetail.pictures?.map((image) => image.imageUrl)}
+          slide={lightboxController.slide}
+        />
       </div>
       <AnimatePresence>
         {isError && <Alert isError={isError} />}

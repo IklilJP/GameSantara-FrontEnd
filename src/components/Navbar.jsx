@@ -81,7 +81,7 @@ function Navbar() {
             size={20}
             className="group-hover:text-red-600 transition font-bold"
           />
-          <span className="font-bold group-hover:text-red-600 transition">
+          <span className="font-bold group-hover:text-red-600 transition py-1">
             Thread
           </span>
         </button>
@@ -91,11 +91,11 @@ function Navbar() {
               onClick={() => setNavModal(!navModal)}
               className="transition group">
               {userLogin ? (
-                <div className="w-8 ml-2">
+                <div className="w-7 h-7 ml-2">
                   <img
+                    className="w-7 h-7 ml-2 rounded-full"
                     src={userLogin.profilePicture.image}
-                    alt=""
-                    className="rounded-full"
+                    alt={userLogin.username}
                   />
                 </div>
               ) : (

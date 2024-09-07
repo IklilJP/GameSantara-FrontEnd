@@ -14,6 +14,7 @@ export const validationSchemaRegsiter = Yup.object().shape({
     .required("Username diperlukan")
     .min(4, "Username minimal 4 karakter")
     .max(20, "Username maksimal 20 karakter")
+    .matches(/^\S+$/, "Username tidak boleh mengandung spasi")
     .matches(/^[a-z]+$/, "Username harus menggunakan huruf kecil")
     .test(
       "noStartingSpace",

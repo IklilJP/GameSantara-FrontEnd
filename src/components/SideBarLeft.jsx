@@ -50,11 +50,11 @@ function SideBarLeft() {
             to={`/user/${userLogin?.id}`}
             className={`flex items-center gap-3 text-md px-4 leading-5 py-3 transition ${location.pathname.startsWith("/user") ? "bg-red-600 text-white" : "hover:bg-gray-700"}`}>
             {userLogin ? (
-              <div className="w-6">
+              <div className="w-6 h-6">
                 <img
                   src={userLogin.profilePicture.image}
-                  alt=""
-                  className="rounded-full"
+                  alt={userLogin.username}
+                  className="rounded-full w-6 h-6"
                 />
               </div>
             ) : (

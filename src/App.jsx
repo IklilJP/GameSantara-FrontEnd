@@ -12,6 +12,7 @@ import CreateThreadPage from "./pages/CreateThreadPage";
 import TrendingPage from "./pages/TrendingPage";
 import LatestPage from "./pages/LatestPage";
 import DetailThreadPage from "./pages/DetailThreadPage";
+import PostsTopic from "./pages/PostsTopic";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function App() {
         <Route path="/user/:userId" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingProfilePage />} />
         <Route path="/create/thread" element={<CreateThreadPage />} />
+        <Route path="/:tag/:by?" element={<PostsTopic />} />
       </Routes>
     </>
   );

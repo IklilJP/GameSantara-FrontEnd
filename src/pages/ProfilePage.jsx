@@ -8,10 +8,14 @@ import MeatballMenu from "../components/MeatballMenu";
 import { useSelector } from "react-redux";
 import { LiaEdit } from "react-icons/lia";
 import { AnimatePresence, motion } from "framer-motion";
-import axiosInstance from "../api/axiosInstance";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { fetchDataService } from "../api/apiServices";
+import {
+  fetchDataService,
+  fetchPostByUserId,
+  fetchLikedPostsByUserId,
+} from "../api/apiServices";
 import { MdScubaDiving } from "react-icons/md";
+import axiosInstance from "../api/axiosInstance";
 
 function ProfilePage() {
   const userLogin = useSelector((state) => state.auth.userDetail);
@@ -21,7 +25,7 @@ function ProfilePage() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const isInitialLoad = useRef(true);
+  const [activeTab, setActiveTab] = useState("thread");
 
   useEffect(() => {
     if (userId === userLogin?.id) {
@@ -31,18 +35,63 @@ function ProfilePage() {
         .get(`/user/${userId}`)
         .then((res) => setUserDetail(res.data.data));
     }
-  }, [userDetail, userLogin]);
+  }, [userLogin, userId]);
+
+  const handleTabChange = (tab) => {
+    if (activeTab === tab) return;
+
+    setActiveTab(tab);
+    setPage(1);
+    setPosts([]);
+    setHasMore(true);
+
+    if (tab === "thread") {
+      fetchDataPosts();
+    } else if (tab === "likes") {
+      fetchLikedPosts();
+    }
+  };
 
   const fetchDataPosts = async () => {
-    fetchDataService(page, "user", hasMore, setPosts, setPage, setHasMore);
+    if (userId === userLogin?.id) {
+      await fetchDataService(
+        page,
+        "user",
+        hasMore,
+        setPosts,
+        setPage,
+        setHasMore,
+      );
+    } else {
+      await fetchPostByUserId(
+        page,
+        hasMore,
+        setPosts,
+        setPage,
+        setHasMore,
+        userId,
+      );
+    }
+  };
+
+  const fetchLikedPosts = async () => {
+    await fetchLikedPostsByUserId(
+      page,
+      hasMore,
+      setPosts,
+      setPage,
+      setHasMore,
+      userId,
+    );
   };
 
   useEffect(() => {
-    if (isInitialLoad.current) {
-      isInitialLoad.current = false;
+    if (activeTab === "thread") {
       fetchDataPosts();
+    } else if (activeTab === "likes" && page === 1) {
+      fetchLikedPosts();
     }
-  }, []);
+  }, [activeTab]);
 
   return (
     <MainLayout>
@@ -69,17 +118,17 @@ function ProfilePage() {
               <span className="font-bold text-xl capitalize text-gray-200">
                 {userDetail?.fullName}
               </span>
-              <span className="">@{userDetail?.username}</span>
+              <span>@{userDetail?.username}</span>
 
               <div className="flex gap-2">
                 <div className="flex gap-2">
-                  <span className="font-bold">10</span>
-                  <span className="">thread</span>
+                  <span className="font-bold">{userDetail?.postsCount}</span>
+                  <span>thread</span>
                 </div>
                 <span>&bull;</span>
                 <div className="flex gap-2">
-                  <span className="font-bold">534</span>
-                  <span className="">upvote</span>
+                  <span className="font-bold">{userDetail?.upVotesCount}</span>
+                  <span>upvote</span>
                 </div>
               </div>
             </div>
@@ -92,47 +141,64 @@ function ProfilePage() {
                 className="group-hover:text-red-600 transition"
               />
             </div>
-            <div className="relative w-10 right-0">
-              <MeatballMenu IsMenuActive={isMenu} setIsMenuActive={setIsMenu} />
-              <AnimatePresence>
-                {isMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    className="absolute w-32 right-5">
-                    <Link
-                      className="flex items-center gap-2 bg-softBlack hover:bg-gray-600 py-1 px-2 border border-colorBorder rounded-lg transition text-sm"
-                      to={"/settings"}>
-                      <LiaEdit size={15} />
-                      Edit Profile
-                    </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            {userId === userLogin?.id && (
+              <div className="relative w-10 right-0">
+                <MeatballMenu
+                  IsMenuActive={isMenu}
+                  setIsMenuActive={setIsMenu}
+                />
+                <AnimatePresence>
+                  {isMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      className="absolute w-32 right-5">
+                      <Link
+                        className="flex items-center gap-2 bg-softBlack hover:bg-gray-600 py-1 px-2 border border-colorBorder rounded-lg transition text-sm"
+                        to={"/settings"}>
+                        <LiaEdit size={15} />
+                        Edit Profile
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
           </div>
         </div>
+
         <div className="px-16 mt-6 max-w-xs">
           <span className="text-white">{userDetail?.bio}</span>
         </div>
+
         <div className="mt-10 border-t border-t-gray-700">
           <div className="flex gap-4 justify-center w-5/12 mx-auto">
-            <div className="flex justify-center px-3 py-1 border-t border-t-red-600">
-              <Link className="flex gap-2 justify-center items-center text-red-600 font-semibold">
+            <div
+              className={`flex justify-center px-3 py-1 ${activeTab === "thread" ? " border-t border-t-red-600" : ""}`}>
+              <Link
+                className={`flex gap-2 justify-center items-center ${activeTab === "thread" ? "text-red-600" : ""}`}
+                onClick={() => handleTabChange("thread")}>
                 <BsFillGrid3X3GapFill />
                 <span>Thread</span>
               </Link>
             </div>
-            <Link className="flex gap-2 justify-center items-center font-semibold">
-              <PiArrowFatUpBold />
-              <span>upvote</span>
-            </Link>
+
+            <div
+              className={`flex justify-center px-3 py-1 ${activeTab === "likes" ? " border-t border-t-red-600" : ""}`}>
+              <Link
+                className={`flex gap-2 justify-center items-center ${activeTab === "likes" ? "text-red-600" : ""}`}
+                onClick={() => handleTabChange("likes")}>
+                <PiArrowFatUpBold />
+                <span>Disukai</span>
+              </Link>
+            </div>
           </div>
+
           <div className="mt-8">
             <InfiniteScroll
               dataLength={posts.length}
-              next={fetchDataPosts}
+              next={activeTab === "thread" ? fetchDataPosts : fetchLikedPosts}
               hasMore={hasMore}
               loader={
                 <div className="w-full flex justify-center py-5">

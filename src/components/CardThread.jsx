@@ -62,7 +62,7 @@ function CardThread({ posts, setPosts }) {
           <Link
             to={`/thread/${item.id}`}
             key={item.id}
-            className="my-3 bg-softBlack p-4 rounded-md block hover:bg-[#2D3239] transition">
+            className="mt-3 bg-softBlack p-4 rounded-t-md block hover:bg-[#2D3239] transition">
             <div className="flex items-center gap-x-3">
               <Link to={`/user/${item.userId}`}>
                 <div className="w-8 rounded-full">
@@ -96,7 +96,7 @@ function CardThread({ posts, setPosts }) {
                 </div>
               </div>
             </div>
-            <div className="my-5">
+            <div className="mt-3">
               <h2 className="font-bold text-lg leading-6">{item.title}</h2>
               <div className="relative mt-1">
                 <p
@@ -129,7 +129,7 @@ function CardThread({ posts, setPosts }) {
               </div>
             </div>
           </Link>
-          <div className="flex mt-2 gap-4">
+          <div className="flex gap-4 bg-softBlack rounded-b-xl">
             <div className="flex justify-around drop-shadow-md">
               <button
                 className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-l-2xl hover:bg-[#2a2f36] transition ${

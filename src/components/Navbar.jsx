@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaUser, FaUserCircle } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 import { MdLogout, MdOutlineLogin } from "react-icons/md";
@@ -9,7 +9,7 @@ import { logout } from "../store/authSlice";
 import { RiEditBoxLine } from "react-icons/ri";
 import { FiPlus } from "react-icons/fi";
 import Alert from "./Alert";
-import axiosInstance from "../api/axiosInstance"; // Assuming you have axios configured
+import axiosInstance from "../api/axiosInstance";
 
 function Navbar() {
   const [navModal, setNavModal] = useState(false);
@@ -21,6 +21,8 @@ function Navbar() {
   const [isError, setIsError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const searchRef = useRef(null);
+  const navModalRef = useRef(null);
 
   const handleResultClick = (threadId) => {
     navigate(`/thread/${threadId}`);
@@ -80,6 +82,24 @@ function Navbar() {
     }
   };
 
+  const handleClickOutside = (event) => {
+    if (searchRef.current && !searchRef.current.contains(event.target)) {
+      setSearchResults([]);
+    }
+
+    if (navModalRef.current && !navModalRef.current.contains(event.target)) {
+      setNavModal(false); // Menutup modal saat klik di luar modal
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [searchResults]);
+
   return (
     <header className="fixed z-50 w-full flex justify-around items-center px-96 py-1 border-b border-b-colorBorder shadow-lg bg-black">
       <div className="w-4/12 ">
@@ -93,7 +113,6 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Search Bar */}
       <div className="relative transition group flex items-center gap-2 border border-colorBorder rounded-full px-4 bg-softBlack w-5/12">
         <IoSearchOutline
           size={20}
@@ -107,7 +126,9 @@ function Navbar() {
           className="w-full max-w-xs bg-softBlack px-2 py-1 focus-visible:outline-none"
         />
         {searchResults.length > 0 && (
-          <div className="absolute top-full right-0 mt-2 w-full bg-black border border-colorBorder rounded-lg shadow-lg z-10">
+          <div
+            ref={searchRef}
+            className="absolute top-full right-0 mt-2 w-full bg-black border border-colorBorder rounded-lg shadow-lg z-10">
             <ul className="">
               {searchResults.map((result) => (
                 <li key={result.id}>
@@ -167,6 +188,7 @@ function Navbar() {
             {navModal &&
               (userLogin ? (
                 <motion.ul
+                  ref={navModalRef}
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}

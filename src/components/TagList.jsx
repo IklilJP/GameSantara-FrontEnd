@@ -2,7 +2,6 @@ import { Link, useLocation } from "react-router-dom";
 
 const TagList = ({ imgUrl, title, id }) => {
   const { pathname } = useLocation();
-  console.log(pathname);
 
   const pathId = `/${id}`;
 

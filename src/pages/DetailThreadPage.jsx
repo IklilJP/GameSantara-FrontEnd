@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { fetchThreadDetailService } from "../api/apiServices";
 import { formatDistanceToNowStrict } from "date-fns";
 import { id } from "date-fns/locale";
-import { HiLink } from "react-icons/hi";
 import {
   PiArrowFatDownBold,
   PiArrowFatDownFill,
@@ -21,6 +20,7 @@ import Alert from "../components/Alert";
 import { sendComment } from "../api/commentService";
 import Comment from "../components/Comment";
 import FsLightbox from "fslightbox-react";
+import ShareBox from "../components/ShareBox";
 
 const DetailThreadPage = () => {
   const { postId } = useParams();
@@ -36,6 +36,7 @@ const DetailThreadPage = () => {
     toggler: false,
     slide: 1,
   });
+  const shareRef = useRef();
 
   const handleModalShare = (event, postId) => {
     event.preventDefault();
@@ -80,6 +81,24 @@ const DetailThreadPage = () => {
       slide: index + 1,
     });
   };
+
+  const handleClickOutside = (event) => {
+    if (
+      shareRef.current &&
+      !shareRef.current.contains(event.target) &&
+      !event.target.closest("button")
+    ) {
+      setModalShare(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalShare]);
 
   if (!threadDetail.user) {
     return (
@@ -207,31 +226,18 @@ const DetailThreadPage = () => {
                 <span className="font-bold">{threadDetail.commentsCount}</span>
               </div>
             </button>
-            <AnimatePresence>
-              <div className="flex bg-[#30353B] rounded-3xl justify-around gap-1 relative group drop-shadow-md">
-                <button
-                  className="px-4 py-1 max-w-32"
-                  onClick={(e) => handleModalShare(e, threadDetail.id)}>
-                  <div className="flex items-center gap-2 w-full h-full">
-                    <PiShareFat className="group-hover:text-red-600 transition" />
-                  </div>
-                </button>
-                {modalShare === threadDetail.id && (
-                  <motion.button
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    onClick={() =>
-                      handleCopy(`https://example.com/posts/${threadDetail.id}`)
-                    }
-                    className="w-36 max-w-40 bg-black absolute top-12 border border-colorBorder rounded-lg">
-                    <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-700 transition">
-                      <HiLink /> Salin Link
-                    </div>
-                  </motion.button>
-                )}
-              </div>
-            </AnimatePresence>
+            <div className="flex bg-[#30353B] rounded-3xl justify-around gap-1 relative group drop-shadow-md hover:bg-black transition">
+              <button
+                className="px-4 py-1 max-w-32"
+                onClick={(e) => handleModalShare(e, threadDetail.id)}>
+                <div className="flex items-center gap-2 w-full h-full ">
+                  <PiShareFat className="group-hover:text-red-600 transition" />
+                </div>
+              </button>
+              {modalShare === threadDetail.id && (
+                <ShareBox id={threadDetail.id} shareRef={shareRef} />
+              )}
+            </div>
           </div>
         </div>
         <div className="my-3">
@@ -260,7 +266,7 @@ const DetailThreadPage = () => {
             </div>
           ) : (
             <button
-              className="w-full text-left border border-colorBorder py-2 px-4 rounded-2xl"
+              className="w-full text-left border border-colorBorder py-2 px-4 rounded-2xl hover:bg-gray-800 transition"
               onClick={() => setIsComment(true)}>
               <span>Kirim komentarmu....</span>
             </button>

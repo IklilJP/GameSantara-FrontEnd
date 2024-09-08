@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaRegMessage } from "react-icons/fa6";
-import { HiLink } from "react-icons/hi";
 import {
   PiArrowFatDownBold,
   PiArrowFatDownFill,
@@ -15,12 +14,7 @@ import { useSelector } from "react-redux";
 import Alert from "./Alert";
 import { Link, useNavigate } from "react-router-dom";
 import { handleDownvote, handleUpvote } from "../api/voteService";
-import {
-  FacebookShareButton,
-  TelegramShareButton,
-  WhatsappShareButton,
-} from "react-share";
-import { FaFacebook, FaTelegram, FaWhatsapp } from "react-icons/fa";
+import ShareBox from "./ShareBox";
 
 function CardThread({ posts, setPosts }) {
   const [modalShare, setModalShare] = useState(null);
@@ -28,16 +22,12 @@ function CardThread({ posts, setPosts }) {
   const userLogin = useSelector((state) => state.auth.userDetail);
   const [isError, setIsError] = useState(null);
   const navigate = useNavigate();
-
-  const handleCopy = (event, url) => {
-    event.preventDefault();
-    event.stopPropagation();
-    navigator.clipboard.writeText(url);
-  };
+  const shareRef = useRef(null);
 
   const handleModalShare = (event, postId) => {
     event.preventDefault();
     event.stopPropagation();
+
     setModalShare((prev) => (prev === postId ? null : postId));
   };
 
@@ -54,6 +44,24 @@ function CardThread({ posts, setPosts }) {
 
     return () => clearTimeout(timeout);
   }, [isError]);
+
+  const handleClickOutside = (event) => {
+    if (
+      shareRef.current &&
+      !shareRef.current.contains(event.target) &&
+      !event.target.closest("button")
+    ) {
+      setModalShare(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalShare]);
 
   return (
     <>
@@ -181,57 +189,20 @@ function CardThread({ posts, setPosts }) {
                 <span className="font-bold">{item.commentsCount}</span>
               </div>
             </button>
-            <AnimatePresence>
-              <div className="flex bg-[#30353B] rounded-3xl justify-around gap-1 relative group drop-shadow-md">
-                <button
-                  className="px-4 py-1 max-w-32"
-                  onClick={(e) => handleModalShare(e, item.id)}>
-                  <div className="flex items-center gap-2 w-full h-full">
-                    <PiShareFat className="group-hover:text-red-600 transition" />
-                  </div>
-                </button>
-                {modalShare === item.id && (
-                  <motion.div className="w-36 max-w-40 bg-black absolute bottom-10 left-0 border border-colorBorder rounded-lg overflow-hidden z-10">
-                    <TelegramShareButton
-                      className="w-36"
-                      url={`https://example.com/posts/${item.id}`}>
-                      <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-700 transition">
-                        <FaTelegram color="#2AABEE " />
-                        Telegram
-                      </div>
-                    </TelegramShareButton>
-                    <FacebookShareButton
-                      className="w-36"
-                      url={`https://example.com/posts/${item.id}`}>
-                      <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-700 transition">
-                        <FaFacebook color="#3b5998" />
-                        Facebook
-                      </div>
-                    </FacebookShareButton>
-                    <WhatsappShareButton
-                      className="w-36"
-                      url={`https://example.com/posts/${item.id}`}>
-                      <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-700 transition">
-                        <FaWhatsapp color="#25D366" />
-                        WhatsApp
-                      </div>
-                    </WhatsappShareButton>
-                    <button
-                      className="w-36"
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      onClick={(e) =>
-                        handleCopy(e, `https://example.com/posts/${item.id}`)
-                      }>
-                      <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-700 transition">
-                        <HiLink className="text-yellow-500" /> Salin Link
-                      </div>
-                    </button>
-                  </motion.div>
-                )}
-              </div>
-            </AnimatePresence>
+            <div
+              ref={shareRef}
+              className="flex bg-[#30353B] rounded-3xl justify-around gap-1 relative group drop-shadow-md hover:bg-[#2A2F36] transition">
+              <button
+                className="px-4 py-1 max-w-32"
+                onClick={(e) => handleModalShare(e, item.id)}>
+                <div className="flex items-center gap-2 w-full h-full">
+                  <PiShareFat className="group-hover:text-red-600 transition" />
+                </div>
+              </button>
+              {modalShare === item.id && (
+                <ShareBox id={item.id} shareRef={shareRef} />
+              )}
+            </div>
           </div>
         </div>
       ))}

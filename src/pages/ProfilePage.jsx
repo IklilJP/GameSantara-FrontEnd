@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import MainLayout from "../components/MainLayout";
 import CardThread from "../components/CardThread";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
@@ -37,22 +37,7 @@ function ProfilePage() {
     }
   }, [userLogin, userId]);
 
-  const handleTabChange = (tab) => {
-    if (activeTab === tab) return;
-
-    setActiveTab(tab);
-    setPage(1);
-    setPosts([]);
-    setHasMore(true);
-
-    if (tab === "thread") {
-      fetchDataPosts();
-    } else if (tab === "likes") {
-      fetchLikedPosts();
-    }
-  };
-
-  const fetchDataPosts = async () => {
+  const fetchDataPosts = useCallback(async () => {
     if (userId === userLogin?.id) {
       await fetchDataService(
         page,
@@ -72,9 +57,9 @@ function ProfilePage() {
         userId,
       );
     }
-  };
+  }, [userId, userLogin?.id, page, hasMore]);
 
-  const fetchLikedPosts = async () => {
+  const fetchLikedPosts = useCallback(async () => {
     await fetchLikedPostsByUserId(
       page,
       hasMore,
@@ -83,7 +68,7 @@ function ProfilePage() {
       setHasMore,
       userId,
     );
-  };
+  }, [page, hasMore, userId]);
 
   useEffect(() => {
     if (activeTab === "thread") {
@@ -91,7 +76,16 @@ function ProfilePage() {
     } else if (activeTab === "likes" && page === 1) {
       fetchLikedPosts();
     }
-  }, [activeTab]);
+  }, [activeTab, fetchDataPosts, fetchLikedPosts]);
+
+  const handleTabChange = (tab) => {
+    if (activeTab === tab) return;
+
+    setActiveTab(tab);
+    setPage(1);
+    setPosts([]);
+    setHasMore(true);
+  };
 
   return (
     <MainLayout>

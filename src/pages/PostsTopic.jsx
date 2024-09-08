@@ -1,51 +1,65 @@
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MainLayout from "../components/MainLayout";
-import { FaShare } from "react-icons/fa";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { MdScubaDiving } from "react-icons/md";
+import CardThread from "../components/CardThread";
+import { fetchPostByTag } from "../api/apiServices";
 
 const PostsTopic = () => {
-  const { state } = useLocation();
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const isInitialLoad = useRef(true);
+  const { tagId } = useParams();
 
-  const fetchDataPosts = async () => {
-    fetchDataService(page, "trend", hasMore, setPosts, setPage, setHasMore);
-  };
+  useEffect(() => {
+    setPosts([]);
+    setPage(1);
+    setHasMore(true);
+  }, [tagId]);
 
-  useEffect(() => {}, []);
+  const fetchDataPosts = useCallback(async () => {
+    if (!hasMore) return;
+
+    try {
+      await fetchPostByTag(page, hasMore, setPosts, setPage, setHasMore, tagId);
+    } catch (error) {
+      console.error("Failed to fetch posts:", error);
+    }
+  }, [page, hasMore, tagId]);
+
+  useEffect(() => {
+    fetchDataPosts();
+  }, [fetchDataPosts]);
+
   return (
     <MainLayout>
-      <div className="bg-softBlack drop-shadow">
-        <div className="flex gap-2 px-8 py-2">
-          <img src={state} alt="" width={60} />
-          <div className="flex flex-col gap-2">
-            <p className="font-bold">Moba</p>
-            <FaShare size={18} />
-          </div>
-        </div>
+      <div role="tablist" className="tabs tabs-boxed bg-softBlack my-2">
+        <a role="tab" className="tab font-bold">
+          Beranda
+        </a>
+        <a role="tab" className="tab font-bold bg-red-600 text-white">
+          Trending
+        </a>
+        <a role="tab" className="tab font-bold">
+          Terbaru
+        </a>
       </div>
-
-      <ul className="flex w-full justify-evenly border-t border-t-colorBorder bg-softBlack">
-        <li className="font-bold py-2 border-b-2 border-red-600">Beranda</li>
-        <li className="font-bold py-2 border-b-2 border-red-600">Trending</li>
-        <li className="font-bold py-2 border-b-2 border-red-600">Terbaru</li>
-      </ul>
 
       <InfiniteScroll
         dataLength={posts.length}
         next={fetchDataPosts}
         hasMore={hasMore}
         loader={
-          <div className="w-full flex justify-center py-5">
+          <div key={0} className="w-full flex justify-center py-5">
             <span className="loading loading-spinner loading-md text-red-600"></span>
           </div>
         }
         scrollableTarget="scrollMain"
         endMessage={
-          <div className="flex flex-col justify-center items-center gap-2 py-2">
+          <div
+            key={0}
+            className="flex flex-col justify-center items-center gap-2 py-2">
             <div className="flex items-center gap-2">
               <MdScubaDiving size={30} color="#dc2626" />
               <span>Kamu menyelam terlalu dalam</span>

@@ -58,20 +58,20 @@ function CardThread({ posts, setPosts }) {
   return (
     <>
       {posts.map((item) => (
-        <>
+        <div key={item.id}>
           <Link
             to={`/thread/${item.id}`}
             key={item.id}
             className="mt-3 bg-softBlack p-4 rounded-t-md block hover:bg-[#2D3239] transition">
             <div className="flex items-center gap-x-3">
               <Link to={`/user/${item.userId}`}>
-                <div className="w-8 rounded-full">
+                <div className="w-8 h-8 rounded-full">
                   <img
                     src={
                       item.profilePictureUrl ||
                       `https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg`
                     }
-                    className="rounded-full"
+                    className="rounded-full w-7 h-7"
                     alt="User"
                   />
                 </div>
@@ -115,7 +115,7 @@ function CardThread({ posts, setPosts }) {
                     <img
                       src={image.imageUrl}
                       alt={`Gambar ${index + 1}`}
-                      className="object-cover w-full h-full rounded-md"
+                      className="object-cover w-full h-full rounded-md aspect-square"
                     />
                     {index === 3 && item.pictures.length > 4 && (
                       <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-md">
@@ -233,7 +233,7 @@ function CardThread({ posts, setPosts }) {
               </div>
             </AnimatePresence>
           </div>
-        </>
+        </div>
       ))}
       <AnimatePresence>
         {isError && <Alert isError={isError} />}

@@ -1,9 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const TagList = ({ imgUrl, title }) => {
+const TagList = ({ imgUrl, title, id }) => {
+  const { pathname } = useLocation();
+  console.log(pathname);
+
+  const pathId = `/${id}`;
+
   return (
-    <li>
-      <Link to={`/${title}`} state={imgUrl}>
+    <li
+      className={` py-2 transition ${pathname === pathId ? "bg-red-600" : "hover:bg-gray-700"}`}>
+      <Link to={`/${id}`}>
         <button type="button" className="flex items-center gap-3 px-4">
           <div className="bg-white rounded-full w-6 h-6 ">
             <img

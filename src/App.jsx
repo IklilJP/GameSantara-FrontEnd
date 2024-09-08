@@ -19,7 +19,6 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchDetailUser());
-    console.log("fetch di APP");
   }, []);
 
   return (
@@ -34,7 +33,7 @@ function App() {
         <Route path="/user/:userId" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingProfilePage />} />
         <Route path="/create/thread" element={<CreateThreadPage />} />
-        <Route path="/:tag/:by?" element={<PostsTopic />} />
+        <Route path="/:tagId/:by?" element={<PostsTopic />} />
       </Routes>
     </>
   );

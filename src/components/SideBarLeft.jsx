@@ -73,9 +73,14 @@ function SideBarLeft() {
             <SlGameController size={20} />
             Topics
           </p>
-          <ul className="mt-3 flex flex-col gap-6">
+          <ul className="mt-3 flex flex-col gap-2">
             {tagsItems.map((item) => (
-              <TagList key={item.id} imgUrl={item.imgUrl} title={item.name} />
+              <TagList
+                key={item.id}
+                imgUrl={item.imgUrl}
+                title={item.name}
+                id={item.id}
+              />
             ))}
           </ul>
         </div>

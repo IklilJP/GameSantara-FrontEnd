@@ -101,7 +101,7 @@ const DetailThreadPage = () => {
                 threadDetail.profilePictureUrl ||
                 `https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg`
               }
-              className="rounded-full"
+              className="rounded-full w-10 h-10"
               alt="User"
             />
           </div>
@@ -151,7 +151,7 @@ const DetailThreadPage = () => {
             ))}
           </div>
 
-          <div className="flex mt-8 gap-4">
+          <div className="flex mt-5 gap-4">
             <div className="flex justify-around drop-shadow-md">
               <button
                 className={`flex bg-[#30353B] items-center gap-2 px-3 py-1 rounded-l-2xl hover:bg-black transition ${

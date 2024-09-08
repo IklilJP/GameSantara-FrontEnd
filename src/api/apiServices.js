@@ -114,3 +114,42 @@ export const fetchLikedPostsByUserId = async (
     }
   }
 };
+
+export const fetchPostByTag = async (
+  page,
+  hasMore,
+  setPosts,
+  setPage,
+  setHasMore,
+  tagId,
+) => {
+  if (!hasMore) return;
+
+  try {
+    const response = await axiosInstance.get(
+      `/post?page=${page}&size=10&by=tag&tagId=${tagId}`,
+    );
+    const newPosts = response.data.data;
+
+    if (newPosts.length === 0) {
+      setHasMore(false);
+      return;
+    }
+
+    setPosts((prevPosts) => {
+      const uniqueNewPosts = newPosts.filter(
+        (newPost) =>
+          !prevPosts.some((existingPost) => existingPost.id === newPost.id),
+      );
+      return [...prevPosts, ...uniqueNewPosts];
+    });
+    setPage((prevIndex) => prevIndex + 1);
+    setHasMore(response.data.paging.hasNext);
+  } catch (error) {
+    if (error.response.status === 404) {
+      setHasMore(false);
+    } else {
+      console.log(error);
+    }
+  }
+};

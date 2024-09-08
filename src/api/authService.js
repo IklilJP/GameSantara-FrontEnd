@@ -21,7 +21,7 @@ const login = async (email, password, isRememberMe) => {
 
         Cookies.set("authToken", token, {
           expires: expirationDate,
-          secure: true,
+          secure: false,
           sameSite: "Strict",
         });
       }

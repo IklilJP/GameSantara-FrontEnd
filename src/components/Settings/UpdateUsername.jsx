@@ -12,7 +12,7 @@ const UpdateUsername = ({ setIsError, setIsSuccess }) => {
   const dispatch = useDispatch();
 
   const handleUpdateUsername = async () => {
-    if (inputValue === "") {
+    if (inputValue.trim() === "") {
       setIsError("Masukan Input");
       return;
     }

@@ -172,7 +172,10 @@ function Navbar() {
                 <div className="w-7 h-7 ml-2">
                   <img
                     className="w-7 h-7 ml-2 rounded-full"
-                    src={userLogin.profilePicture.image}
+                    src={
+                      userLogin.profilePicture?.image ||
+                      "https://res.cloudinary.com/dpofjmzdu/image/upload/v1724926159/assets/pp-notfound.jpg"
+                    }
                     alt={userLogin.username}
                   />
                 </div>

@@ -52,7 +52,10 @@ function SideBarLeft() {
             {userLogin ? (
               <div className="w-6 h-6">
                 <img
-                  src={userLogin.profilePicture.image}
+                  src={
+                    userLogin.profilePicture?.image ||
+                    "https://res.cloudinary.com/dpofjmzdu/image/upload/v1724926159/assets/pp-notfound.jpg"
+                  }
                   alt={userLogin.username}
                   className="rounded-full w-6 h-6"
                 />

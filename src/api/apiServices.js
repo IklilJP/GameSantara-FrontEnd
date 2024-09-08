@@ -121,13 +121,14 @@ export const fetchPostByTag = async (
   setPosts,
   setPage,
   setHasMore,
+  tagBy,
   tagId,
 ) => {
   if (!hasMore) return;
 
   try {
     const response = await axiosInstance.get(
-      `/post?page=${page}&size=10&by=tag&tagId=${tagId}`,
+      `/post?page=${page}&size=10&by=${tagBy}&tagId=${tagId}`,
     );
     const newPosts = response.data.data;
 

@@ -10,40 +10,60 @@ const PostsTopic = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [tab, setTab] = useState("");
   const { tagId } = useParams();
 
   useEffect(() => {
     setPosts([]);
     setPage(1);
     setHasMore(true);
-  }, [tagId]);
+  }, [tagId, tab]);
 
   const fetchDataPosts = useCallback(async () => {
     if (!hasMore) return;
 
     try {
-      await fetchPostByTag(page, hasMore, setPosts, setPage, setHasMore, tagId);
+      await fetchPostByTag(
+        page,
+        hasMore,
+        setPosts,
+        setPage,
+        setHasMore,
+        tab,
+        tagId,
+      );
     } catch (error) {
       console.error("Failed to fetch posts:", error);
     }
-  }, [page, hasMore, tagId]);
+  }, [page, hasMore, tagId, tab]);
 
   useEffect(() => {
     fetchDataPosts();
-  }, [fetchDataPosts]);
+  }, [fetchDataPosts, tab]);
 
   return (
     <MainLayout>
-      <div role="tablist" className="tabs tabs-boxed bg-softBlack my-2">
-        <a role="tab" className="tab font-bold">
+      <div
+        role="tablist"
+        className="tabs tabs-boxed bg-softBlack my-2 drop-shadow-lg">
+        <button
+          role="tab"
+          className={`tab font-bold drop-shadow-lg ${tab === "tag" ? " bg-red-600 text-white" : ""}`}
+          onClick={() => setTab("tag")}>
           Beranda
-        </a>
-        <a role="tab" className="tab font-bold bg-red-600 text-white">
+        </button>
+        <button
+          role="tab"
+          className={`tab font-bold drop-shadow-lg ${tab === "tag-trend" ? " bg-red-600 text-white" : ""}`}
+          onClick={() => setTab("tag-trend")}>
           Trending
-        </a>
-        <a role="tab" className="tab font-bold">
+        </button>
+        <button
+          role="tab"
+          className={`tab font-bold drop-shadow-lg ${tab === "tag-latest" ? " bg-red-600 text-white" : ""}`}
+          onClick={() => setTab("tag-latest")}>
           Terbaru
-        </a>
+        </button>
       </div>
 
       <InfiniteScroll

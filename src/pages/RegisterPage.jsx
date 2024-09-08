@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputText from "../components/InputText";
 import ButtonForm from "../components/ButtonForm";
 import { useForm } from "react-hook-form";
@@ -6,29 +6,41 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { axiosInstance } from "../api/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
 import { validationSchemaRegsiter } from "../libs/validationSchema";
+import Alert from "../components/Alert";
+import { AnimatePresence } from "framer-motion";
 
 function RegisterPage() {
   // prettier-ignore
   const { register, handleSubmit, formState: { errors }, } = useForm({
     resolver: yupResolver(validationSchemaRegsiter),
   });
-
+  const [isError, setIsError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setIsError(null);
+    }, 2000);
+
+    return () => clearTimeout(timeOut);
+  }, [isError]);
 
   const handleRegister = async (data) => {
     setIsLoading(true);
 
     try {
-      await axiosInstance.post("/auth/register/user", {
+      const response = await axiosInstance.post("/auth/register/user", {
         username: data.username,
         password: data.password,
         fullName: data.fullName,
         email: data.email,
       });
+
+      console.log(response.data.data);
       navigate("/login");
     } catch (error) {
-      console.log(error);
+      setIsError(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -102,6 +114,9 @@ function RegisterPage() {
             </div>
           </div>
         </div>
+        <AnimatePresence>
+          {isError && <Alert isError={isError} />}
+        </AnimatePresence>
       </div>
     </div>
   );

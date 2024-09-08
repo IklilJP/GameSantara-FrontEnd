@@ -7,9 +7,9 @@ const TagList = ({ imgUrl, title, id }) => {
 
   return (
     <li
-      className={` py-2 transition ${pathname === pathId ? "bg-red-600" : "hover:bg-gray-700"}`}>
+      className={`transition ${pathname === pathId ? "bg-red-600" : "hover:bg-gray-700"}`}>
       <Link to={`/${id}`}>
-        <button type="button" className="flex items-center gap-3 px-4">
+        <button type="button" className="flex items-center gap-3 px-4 py-2">
           <div className="bg-white rounded-full w-6 h-6 ">
             <img
               src={imgUrl}

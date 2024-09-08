@@ -16,9 +16,11 @@ import {
 } from "../api/apiServices";
 import { MdScubaDiving } from "react-icons/md";
 import axiosInstance from "../api/axiosInstance";
+import ShareBox from "../components/ShareBox";
 
 function ProfilePage() {
   const userLogin = useSelector((state) => state.auth.userDetail);
+  const [modalShare, setModalShare] = useState(null);
   const [isMenu, setIsMenu] = useState(false);
   const [userDetail, setUserDetail] = useState({});
   const { userId } = useParams();
@@ -26,6 +28,7 @@ function ProfilePage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [activeTab, setActiveTab] = useState("thread");
+  const shareRef = useRef(null);
 
   useEffect(() => {
     if (userId === userLogin?.id) {
@@ -36,6 +39,13 @@ function ProfilePage() {
         .then((res) => setUserDetail(res.data.data));
     }
   }, [userLogin, userId]);
+
+  const handleModalShare = (event, postId) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setModalShare((prev) => (prev === postId ? null : postId));
+  };
 
   const fetchDataPosts = useCallback(async () => {
     if (userId === userLogin?.id) {
@@ -87,6 +97,20 @@ function ProfilePage() {
     setHasMore(true);
   };
 
+  const handleClickOutside = (event) => {
+    if (shareRef.current && !shareRef.current.contains(event.target)) {
+      setModalShare(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalShare]);
+
   return (
     <MainLayout>
       <div className="py-12">
@@ -129,11 +153,21 @@ function ProfilePage() {
           </div>
 
           <div className="h-10 flex justify-end items-center gap-3">
-            <div>
-              <PiShareFat
-                size={20}
-                className="group-hover:text-red-600 transition"
-              />
+            <div
+              ref={shareRef}
+              className="flex rounded-3xl justify-around gap-1 relative group drop-shadow-md hover:bg-[#2A2F36] transition">
+              <button
+                className="px-4 py-1 max-w-32"
+                onClick={(e) => handleModalShare(e, userDetail?.id)}>
+                <div className="flex items-center gap-2 w-full h-full">
+                  <PiShareFat className="group-hover:text-red-600 transition" />
+                </div>
+              </button>
+              {modalShare && (
+                <div className="absolute -bottom-52 -left-10">
+                  <ShareBox id={userDetail.id} shareRef={shareRef} />
+                </div>
+              )}
             </div>
             {userId === userLogin?.id && (
               <div className="relative w-10 right-0">

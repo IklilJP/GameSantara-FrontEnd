@@ -14,18 +14,24 @@ import {
 import { FaRegMessage, FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import { formatTime } from "../libs/formatTime";
 import { useSelector } from "react-redux";
+import { AnimatePresence } from "framer-motion";
+import Alert from "./Alert";
 
 const Comment = ({ postId, comments = [], setComments }) => {
   const userLogin = useSelector((state) => state.auth.userDetail);
   const [isComment, setIsComment] = useState({});
   const [contentComment, setContentComment] = useState("");
   const [openComment, setOpenComment] = useState({});
+  const [isError, setIsError] = useState(null);
 
   useEffect(() => {
     getComment(postId, setComments);
   }, [postId, setComments]);
 
   const handleUpvote = async (commentId, isUpVoted, isDownVoted) => {
+    if (!userLogin) {
+      setIsError("Silahkan login terlebih dahulu");
+    }
     try {
       await upvoteComment(
         setComments,
@@ -40,6 +46,9 @@ const Comment = ({ postId, comments = [], setComments }) => {
   };
 
   const handleDownvote = async (commentId, isUpVoted, isDownVoted) => {
+    if (!userLogin) {
+      setIsError("Silahkan login terlebih dahulu");
+    }
     try {
       await downvoteComment(
         setComments,
@@ -52,6 +61,14 @@ const Comment = ({ postId, comments = [], setComments }) => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setIsError(null);
+    }, 2000);
+
+    return () => clearTimeout(timeOut);
+  }, [isError]);
 
   if (!comments || comments.length === 0) {
     return null;
@@ -175,6 +192,9 @@ const Comment = ({ postId, comments = [], setComments }) => {
         {/* Render Child Comments */}
         {openComment[comment.id] &&
           renderComments(getChildComments(comment.id), level + 1)}
+        <AnimatePresence>
+          {isError && <Alert isError={isError} />}
+        </AnimatePresence>
       </div>
     ));
   };

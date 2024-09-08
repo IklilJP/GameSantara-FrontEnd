@@ -53,6 +53,11 @@ const DetailThreadPage = () => {
       setIsError("Comment cannot be empty");
       return;
     }
+
+    if (!userLogin) {
+      setIsError("Silahkan Login Terlebih dahulu");
+    }
+
     sendComment(threadDetail.id, contentComment, null, setComments, userLogin);
     setContentComment("");
   };

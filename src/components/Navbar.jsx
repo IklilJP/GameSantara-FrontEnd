@@ -88,7 +88,7 @@ function Navbar() {
     }
 
     if (navModalRef.current && !navModalRef.current.contains(event.target)) {
-      setNavModal(false); // Menutup modal saat klik di luar modal
+      setNavModal(false);
     }
   };
 

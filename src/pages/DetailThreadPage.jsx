@@ -241,8 +241,8 @@ const DetailThreadPage = () => {
               </button>
               {modalShare === threadDetail.id && (
                 <ShareBox
-                  id={threadDetail.id}
-                  shareRef={`http://178.128.97.42:8080/thread/${threadDetail.id}`}
+                  url={`http://178.128.97.42:8080/thread/${threadDetail?.id}`}
+                  shareRef={shareRef}
                 />
               )}
             </div>

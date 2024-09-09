@@ -20,6 +20,9 @@ RUN npm run build
 # Step 7: Use a smaller image to serve the built application
 FROM nginx:alpine
 
+# Copy your custom Nginx configuration file
+COPY nginx.conf /etc/nginx/nginx.conf
+
 # Step 8: Copy the build output to Nginx's public folder
 COPY --from=build /app/dist /usr/share/nginx/html
 

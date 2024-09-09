@@ -10,7 +10,7 @@ const PostsTopic = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [tab, setTab] = useState("");
+  const [tab, setTab] = useState("tag");
   const { tagId } = useParams();
 
   useEffect(() => {

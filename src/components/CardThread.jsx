@@ -200,7 +200,10 @@ function CardThread({ posts, setPosts }) {
                 </div>
               </button>
               {modalShare === item.id && (
-                <ShareBox id={item.id} shareRef={shareRef} />
+                <ShareBox
+                  id={item.id}
+                  shareRef={`http://178.128.97.42:8080/thread/${item.id}`}
+                />
               )}
             </div>
           </div>

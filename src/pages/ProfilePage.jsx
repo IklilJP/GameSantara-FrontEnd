@@ -165,7 +165,10 @@ function ProfilePage() {
               </button>
               {modalShare && (
                 <div className="absolute -bottom-52 -left-10">
-                  <ShareBox id={userDetail.id} shareRef={shareRef} />
+                  <ShareBox
+                    id={userDetail.id}
+                    shareRef={`http://178.128.97.42:8080/user/${userDetail?.id}`}
+                  />
                 </div>
               )}
             </div>

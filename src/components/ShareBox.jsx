@@ -38,7 +38,7 @@ const ShareBox = ({ id, shareRef }) => {
         </div>
       </WhatsappShareButton>
       <CopyToClipboard text={`https://example.com/posts/${id}`}>
-        <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-700 transition">
+        <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-700 transition cursor-pointer">
           <HiLink className="text-yellow-500" /> Salin Link
         </div>
       </CopyToClipboard>

@@ -1,8 +1,11 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
+const be_rul = import.meta.env.VITE_BACKEND_URL;
+
 export const axiosInstance = axios.create({
-  baseURL: "http://10.10.102.115:8080/api/v1", // IP Mirza
+  baseURL: be_rul, // lab enigma
+  // baseURL: "http://10.10.102.115:8080/api/v1", // IP Mirza
   // baseURL: "http://10.10.102.137:8080/api", // IP PM Iklil
   // baseURL: "http://localhost:8080/api", // My IP
 });

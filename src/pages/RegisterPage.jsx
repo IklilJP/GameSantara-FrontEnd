@@ -50,8 +50,10 @@ function RegisterPage() {
     <div className="bg-[url('https://res.cloudinary.com/dpofjmzdu/image/upload/v1724813280/background_all.png')] h-screen w-screen bg-cover bg-no-repeat flex justify-center items-center">
       <div className="lg:w-6/12 max-w-5xl max-h-xl shadow-lg">
         <div className="flex">
-          <div className="flex-1 lg:block hidden w-52 relative bg-[url('https://res.cloudinary.com/dpofjmzdu/image/upload/v1724813278/background_Register.jpg')] rounded-l-xl"></div>
-          <div className="bg-black py-5 px-4 lg:rounded-r-xl rounded-xl">
+          <div className="flex-1 lg:block hidden w-52 relative bg-[url('https://res.cloudinary.com/dpofjmzdu/image/upload/v1725844638/snlqgyqiwkl3xgy1i8ha.jpg')] rounded-l-xl bg-cover bg-no-repeat bg-center">
+            <div className="bg-black/30 w-full h-full"></div>
+          </div>
+          <div className="bg-black py-5 px-4 rounded-r-xl">
             <div>
               <h3 className="w-full text-center text-3xl font-bold text-red-600 py-3">
                 Register

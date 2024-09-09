@@ -122,7 +122,7 @@ function Navbar() {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Tulis judul atau deskripsi"
+          placeholder="Tulis judul, deskripsi atau tag"
           className="w-full max-w-xs bg-softBlack px-2 py-1 focus-visible:outline-none"
         />
         {searchResults.length > 0 && (

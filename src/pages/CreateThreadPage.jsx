@@ -59,6 +59,9 @@ export default function CreateThreadPage() {
   const onSubmit = (data) => {
     setIsLoading(true);
 
+    console.log("Data after validation:", data);
+    console.log("Form errors:", errors); // Log the errors to debug
+
     const formData = new FormData();
 
     const postCreateRequest = JSON.stringify({

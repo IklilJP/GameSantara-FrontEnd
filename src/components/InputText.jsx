@@ -8,7 +8,6 @@ function InputText({
   register,
   nameForm,
   errors,
-  onFocus,
   credentialError,
   handelOnFocus,
 }) {

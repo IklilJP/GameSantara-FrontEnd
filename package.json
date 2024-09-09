@@ -22,6 +22,7 @@
     "linkify-react": "^4.1.3",
     "rakyat-game-zone-fe": "file:",
     "react": "^18.3.1",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
     "react-icons": "^5.3.0",

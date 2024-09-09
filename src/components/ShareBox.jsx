@@ -6,14 +6,9 @@ import {
 } from "react-share";
 import { FaFacebook, FaTelegram, FaWhatsapp } from "react-icons/fa";
 import { HiLink } from "react-icons/hi";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 const ShareBox = ({ id, shareRef }) => {
-  const handleCopy = (event, url) => {
-    event.preventDefault();
-    event.stopPropagation();
-    navigator.clipboard.writeText(url);
-  };
-
   return (
     <div
       ref={shareRef}
@@ -42,16 +37,11 @@ const ShareBox = ({ id, shareRef }) => {
           WhatsApp
         </div>
       </WhatsappShareButton>
-      <button
-        className="w-36"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        onClick={(e) => handleCopy(e, `https://example.com/posts/${id}`)}>
+      <CopyToClipboard text={`https://example.com/posts/${id}`}>
         <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-700 transition">
           <HiLink className="text-yellow-500" /> Salin Link
         </div>
-      </button>
+      </CopyToClipboard>
     </div>
   );
 };
